@@ -1,3 +1,3 @@
 # Advanced-Programming-Techniques-Assignment-2
-Group R.E.H.F
-[embed] http://example.com/file.pdf [/embed]
+Group R.E.H.F \n
+https://github.com/usernameEtonLost/Advanced-Programming-Techniques-Assignment-2/blob/main/a2_cosc1076_s1_2023.pdf
