@@ -26,32 +26,37 @@ void printMainMenu() {
 int main(int argc, char **argv)
 {
     /* validate command line arguments */
-    // TODO
-    int choise = 0;
+    bool allowedArgs = true;
+    if (argc != 3) {
+        std::cout << "You have not entered the right amount of arguments.";
+    }
 
-    while (!(choise == 3 || choise == 9) && !std::cin.eof()) {
+
+    int choice = 0;
+
+    while (!(choice == 3 || choice == 9) && !std::cin.eof()) {
 
         printMainMenu();
-        std::cin >> choise;
+        std::cin >> choice;
         std::cout << std::endl;
 
-        if (choise == 1) {
+        if (choice == 1) {
             std::cout << "Display Items" << std::endl;
-        } else if (choise == 2) {
+        } else if (choice == 2) {
             std::cout << "Purchase Items" << std::endl;
-        } else if (choise == 3) {
+        } else if (choice == 3) {
             std::cout << "Save and Exit" << std::endl;
-        } else if (choise == 4) {
+        } else if (choice == 4) {
             std::cout << "Add Item" << std::endl;
-        } else if (choise == 5) {
+        } else if (choice == 5) {
             std::cout << "Remove Item" << std::endl;
-        } else if (choise == 6) {
+        } else if (choice == 6) {
             std::cout << "Display Coins" << std::endl;
-        } else if (choise == 7) {
+        } else if (choice == 7) {
             std::cout << "Reset Stock" << std::endl;
-        } else if (choise == 8) {
+        } else if (choice == 8) {
             std::cout << "Reset Coins" << std::endl;
-        } else if (choise == 9) {
+        } else if (choice == 9) {
             std::cout << "Abort Program" << std::endl;
         } else if (!std::cin.eof()) {
             if (std::cin.fail()) {
