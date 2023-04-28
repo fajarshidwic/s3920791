@@ -28,13 +28,13 @@ int main(int argc, char **argv)
     /* validate command line arguments */
     bool allowedArgs = true;
     if (argc != 3) {
-        std::cout << "You have not entered the right amount of arguments.";
+        std::cout << "You have not entered the right amount of arguments." << std::endl;
+        allowedArgs = false;
     }
-
 
     int choice = 0;
 
-    while (!(choice == 3 || choice == 9) && !std::cin.eof()) {
+    while (!(choice == 3 || choice == 9) && !std::cin.eof() && allowedArgs) {
 
         printMainMenu();
         std::cin >> choice;
