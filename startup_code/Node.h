@@ -54,7 +54,19 @@ public:
     Price price;
     
     // how many of this item do we have on hand? 
-    unsigned on_hand;    
+    unsigned on_hand;
+
+    /**
+     * @brief Initialize a Stock class
+     *
+     * @param id The given ID (string type)
+     * @param name The name of the item (string type)
+     * @param description The description of item (string type)
+     * @param price The price of the item, 12.50 as 12 dollars and 50 cents
+     * @param on_hand The quantity of the item
+     */
+    Stock(std::string id="", std::string name="", std::string description="", double price=0, unsigned on_hand=DEFAULT_STOCK_LEVEL);
+    ~Stock();
 };
 
 /**
@@ -64,6 +76,7 @@ class Node
 {
 public:
     Node();
+    Node(Stock* data, Node* next = nullptr);
     ~Node();
     // pointer to the data held for the node 
     Stock* data;

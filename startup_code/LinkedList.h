@@ -10,6 +10,27 @@ public:
     ~LinkedList();
 
     // more functions to be added perhaps...
+    void addFront(Stock* data);
+    void addBack(Stock* data);
+    void addAt(Stock* data, unsigned index);
+    
+    void removeFront();
+    void removeBack();
+    void removeAt(unsigned index);
+    void remove(std::string id);
+    
+    /**
+     * @brief Throw id serach item in stock
+     *
+     *@param id The given ID (string type)
+     *@return a printer of a item
+     *@return nullptr if item not found
+     */
+    Stock* get(std::string id);
+    
+    void sort();
+
+    void printItems();
 
 private:
     // the beginning of the list
@@ -17,6 +38,12 @@ private:
   
     // how many nodes are there in the list?
     unsigned count;
+
+    // Helper functions for sort (I used merge sort for Linked List)
+    void splitList(Node* source, Node** front, Node** back);
+    Node* mergeLists(Node* a, Node* b);
+    Node* mergeSort(Node* head);
+
 };
 
 #endif  // LINKEDLIST_H
