@@ -1,5 +1,9 @@
 #include <iostream>
 #include "LinkedList.h"
+// Added to make line "std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');" work
+#include <limits>
+// For convenience
+using namespace std;
 
 /**
  * manages the running of the program, initialises data structures, loads
@@ -26,17 +30,25 @@ void printMainMenu() {
 // delete this function in the final code
 void useLinkedList();
 
-
 int main(int argc, char **argv)
 {
+    // Reading the data inserted.
+    string coinsDat = argv[1];
+    string stockDat = argv[2];
     /* validate command line arguments */
     bool allowedArgs = true;
     if (argc != 3) {
-        std::cout << "You have not entered the right amount of arguments." << std::endl;
+        cout << "You may have not entered the right arguments." << endl;
         allowedArgs = false;
     }
-
-    int choice = 0;
+    // Adding requried documents.
+    else {
+        // make the vending machine linked list.
+        LinkedList vendingMachine;
+        
+    }
+    
+    int choice = -1;
 
     while (!(choice == 3 || choice == 9) && !std::cin.eof() && allowedArgs) {
 
@@ -75,12 +87,17 @@ int main(int argc, char **argv)
             }
         } 
     }
-    std::cout << "Just a test, nothing implemented yet!" << std::endl;
+    
+    // This stops it from showing when not fitting condition
+    if (allowedArgs) {
+        std::cout << "\nJust a test, nothing implemented yet!" << std::endl;
+    }
     
     return EXIT_SUCCESS;
 }
 
 // delete this function in the final code
+
 void useLinkedList() {
     // The stock data should be stored in linked list in this format
     // Stock(id="", name="", description="", price=0.0, on_hand=20)  defult initialization
@@ -91,7 +108,7 @@ void useLinkedList() {
     Stock* stock5 = new Stock("I0005", "Apple Pie", "description", 1.5, 100);
 
     LinkedList list;
-    
+
     list.addFront(stock1);
     list.addBack(stock2);
     list.addFront(stock3);
@@ -107,9 +124,9 @@ void useLinkedList() {
     list.removeAt(2);
     list.remove("I0002");
     list.sort();
-    
+   
     list.printItems();
-    
+   
     // get() will return nullptr when id not found
     Stock* data = list.get("I0003");
     if (data != nullptr) {
