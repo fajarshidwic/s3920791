@@ -2,6 +2,9 @@
 #include "LinkedList.h"
 // Added to make line "std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');" work
 #include <limits>
+/* This handles the opening and closing of files. Taken from: 
+https://www.w3schools.in/cplusplus/working-with-files#:~:text=Opening%20a%20File%20in%20C%2B%2B,-The%20first%20operation&text=The%20syntax%20of%20opening%20a,flags%20used%20for%20file%20opening.*/
+#include <fstream>
 // For convenience
 using namespace std;
 
@@ -45,7 +48,13 @@ int main(int argc, char **argv)
     else {
         // make the vending machine linked list.
         LinkedList vendingMachine;
-        
+        // Reading files
+        ifstream stockFile;
+        stockFile.open(stockDat);
+        char s[0];
+        stockFile.read(s, 9999);
+        cout << s << endl;
+        stockFile.close();
     }
     
     int choice = -1;
