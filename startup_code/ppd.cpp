@@ -115,8 +115,8 @@ int main(int argc, char **argv)
     }
 
     string choice = "-1";
-
-    while (!std::cin.eof() && !(std::stoi(choice) == 3 || std::stoi(choice) == 9) && allowedArgs) {
+    bool exit = false;
+    while (!std::cin.eof() && !exit && allowedArgs) {
         
         printMainMenu();
         choice = Helper::readInput();
@@ -127,7 +127,7 @@ int main(int argc, char **argv)
                     isInt = false;
                 }
             }
-            if (isInt) {
+            if (isInt && choice != "") {
                 if (std::stoi(choice) == 0) {
                     useLinkedList();
                 }
@@ -138,6 +138,7 @@ int main(int argc, char **argv)
                     std::cout << "Purchase Items" << std::endl;
                     purchaseItem(&vendingMachine);
                 } else if (std::stoi(choice) == 3) {
+                    exit = true;
                     std::cout << "Save and Exit" << std::endl;
                 } else if (std::stoi(choice) == 4) {
                     std::cout << "Add Item" << std::endl;
@@ -150,6 +151,7 @@ int main(int argc, char **argv)
                 } else if (std::stoi(choice) == 8) {
                     std::cout << "Reset Coins" << std::endl;
                 } else if (std::stoi(choice) == 9) {
+                    exit = true;
                     std::cout << "Abort Program" << std::endl;
                 } else if (!std::cin.eof()) {
                     std::cout << "Error: menu item selected is not valid." << std::endl;
