@@ -113,7 +113,7 @@ int main(int argc, char **argv)
     if (allowedArgs) {
         purchaseItem(&vendingMachine);
     }
-    
+
     int choice = -1;
 
     while (!(choice == 3 || choice == 9) && !std::cin.eof() && allowedArgs) {
@@ -134,6 +134,7 @@ int main(int argc, char **argv)
             std::cout << "Save and Exit" << std::endl;
         } else if (choice == 4) {
             std::cout << "Add Item" << std::endl;
+
         } else if (choice == 5) {
             std::cout << "Remove Item" << std::endl;
         } else if (choice == 6) {
@@ -235,21 +236,22 @@ void purchaseItem(LinkedList* LinkedList) {
         cout << "Please hand over the money - type in the value of each note/coin in cents.\nPress enter or ctrl-d on a new line to cancel this purchase:\n";
         // Test variable
         bool validAnswer = true;
+        string inputMoney;
         int change = dollar*100 + cent;
         while (validAnswer) {
             dollar = change / 100;
             cent = change % 100;
             cout << "You still need to give us $" << dollar << "." << cent << ": ";
-            std::getline(std::cin, itemId);
-            Helper::strip(itemId);
+            std::getline(std::cin, inputMoney);
+            Helper::strip(inputMoney);
             // Base termination case:
-            if ((std::cin.eof()) || (itemId == "")) {
+            if ((std::cin.eof()) || (inputMoney == "")) {
                 cout << "Pressed crtl-d or enter" << endl;
                 validAnswer = false;
             }
             // Success case:
             else {
-                change = change - std::stoi(itemId);
+                change = change - std::stoi(inputMoney);
                 if (change <= 0) {
                     change = abs(change);
                     cout << change << endl;
@@ -268,9 +270,7 @@ void purchaseItem(LinkedList* LinkedList) {
 
 void printChange(int change) {
     if (change / 1000 > 0) {
-        for (int i = 0; i < (change / 1000); i++) {
-            cout << "$10 ";
-        }
+        cout << "$10 ";
         change %= 1000;
     }
     if (change / 500 > 0) {
