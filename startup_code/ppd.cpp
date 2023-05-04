@@ -216,7 +216,7 @@ void purchaseItem(LinkedList* LinkedList) {
     std::getline(std::cin, itemId);
     Helper::strip(itemId);
     Stock* item = (*LinkedList).get(itemId);
-    if (item != nullptr) {
+    if ((item != nullptr) & (item->on_hand > 0)) {
         // Printing the item
         cout << "You have selected \"";
         cout << item->name;
