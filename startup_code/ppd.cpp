@@ -111,12 +111,12 @@ int main(int argc, char **argv)
     
     // Testing
     if (allowedArgs) {
-        purchaseItem(&vendingMachine);
+        // purchaseItem(&vendingMachine);
     }
 
-    string choice = "";
+    string choice = "-1";
 
-    while (!(std::stoi(choice) == 3 || std::stoi(choice) == 9) && !std::cin.eof() && allowedArgs) {
+    while (!std::cin.eof() && !(std::stoi(choice) == 3 || std::stoi(choice) == 9) && allowedArgs) {
         
         printMainMenu();
         choice = Helper::readInput();
