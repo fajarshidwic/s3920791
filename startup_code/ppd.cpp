@@ -110,8 +110,10 @@ int main(int argc, char **argv)
     }
     
     // Testing
-    purchaseItem(&vendingMachine);
-
+    if (allowedArgs) {
+        purchaseItem(&vendingMachine);
+    }
+    
     int choice = -1;
 
     while (!(choice == 3 || choice == 9) && !std::cin.eof() && allowedArgs) {
