@@ -52,7 +52,7 @@ void LinkedList::addAt(Stock *data, unsigned index) {
             Node* newNode = new Node(data);
             Node* current = head;
             
-            for (int i = 1; i < index; ++i) {
+            for (unsigned i = 1; i < index; ++i) {
                 current = current->next;
             }
             newNode->next = current->next;
@@ -103,7 +103,7 @@ void LinkedList::removeAt(unsigned index) {
             removeBack();
         } else {
             Node* current = head;
-            for (int i = 1; i < index; ++i) {
+            for (unsigned i = 1; i < index; ++i) {
                 current = current->next;
             }
             Node* toRemove = current->next;
@@ -163,7 +163,7 @@ void LinkedList::printItems() {
     cout << "----------" << endl;
     cout << "ID   |Name                                    | Available | Price" << endl;
     cout << "-----------------------------------------------------------------" << endl;
-    for (int i=0; i<count; ++i) {
+    for (unsigned i=0; i<count; ++i) {
         cout << std::left << std::setw(5) << current->data->id
             << "|" << std::setw(40) << current->data->name
             << "|" << std::setw(11) << current->data->on_hand
