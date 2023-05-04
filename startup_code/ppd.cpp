@@ -114,46 +114,52 @@ int main(int argc, char **argv)
         purchaseItem(&vendingMachine);
     }
 
-    int choice = -1;
+    string choice = "";
 
-    while (!(choice == 3 || choice == 9) && !std::cin.eof() && allowedArgs) {
+    while (!(std::stoi(choice) == 3 || std::stoi(choice) == 9) && !std::cin.eof() && allowedArgs) {
         
         printMainMenu();
-        std::cin >> choice;
-        std::cout << std::endl;
-
-        if (choice == 0) {
-            useLinkedList();
-        }
-        else if (choice == 1) {
-            vendingMachine.printItems();
-            cout << endl;
-        } else if (choice == 2) {
-            std::cout << "Purchase Items" << std::endl;
-        } else if (choice == 3) {
-            std::cout << "Save and Exit" << std::endl;
-        } else if (choice == 4) {
-            std::cout << "Add Item" << std::endl;
-
-        } else if (choice == 5) {
-            std::cout << "Remove Item" << std::endl;
-        } else if (choice == 6) {
-            std::cout << "Display Coins" << std::endl;
-        } else if (choice == 7) {
-            std::cout << "Reset Stock" << std::endl;
-        } else if (choice == 8) {
-            std::cout << "Reset Coins" << std::endl;
-        } else if (choice == 9) {
-            std::cout << "Abort Program" << std::endl;
-        } else if (!std::cin.eof()) {
-            if (std::cin.fail()) {
+        choice = Helper::readInput();
+        if (!std::cin.eof()) {
+            bool isInt = true;
+            for (int i = 0; i < choice.length(); ++i){
+                if (!isdigit(choice.at(i))){
+                    isInt = false;
+                }
+            }
+            if (isInt) {
+                if (std::stoi(choice) == 0) {
+                    useLinkedList();
+                }
+                else if (std::stoi(choice) == 1) {
+                    vendingMachine.printItems();
+                    cout << endl;
+                } else if (std::stoi(choice) == 2) {
+                    std::cout << "Purchase Items" << std::endl;
+                    purchaseItem(&vendingMachine);
+                } else if (std::stoi(choice) == 3) {
+                    std::cout << "Save and Exit" << std::endl;
+                } else if (std::stoi(choice) == 4) {
+                    std::cout << "Add Item" << std::endl;
+                } else if (std::stoi(choice) == 5) {
+                    std::cout << "Remove Item" << std::endl;
+                } else if (std::stoi(choice) == 6) {
+                    std::cout << "Display Coins" << std::endl;
+                } else if (std::stoi(choice) == 7) {
+                    std::cout << "Reset Stock" << std::endl;
+                } else if (std::stoi(choice) == 8) {
+                    std::cout << "Reset Coins" << std::endl;
+                } else if (std::stoi(choice) == 9) {
+                    std::cout << "Abort Program" << std::endl;
+                } else if (!std::cin.eof()) {
+                    std::cout << "Error: menu item selected is not valid." << std::endl;
+                }
+            } else {
                 std::cout << "Error: input was not a number. Please try again." << std::endl;
                 std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            } else {
-                std::cout << "Error: menu item selected is not valid." << std::endl;
+                // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             }
-        } 
+        }
     }
     
     // This stops it from showing when not fitting condition
