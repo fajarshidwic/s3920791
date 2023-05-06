@@ -343,6 +343,7 @@ void addItem(LinkedList& list) {
         return;
     } else {
         list.addBack(new Stock(newID, name, description, price));
+        std::cout << "This item \"" << name << " - " << description << "\" has now been added to the menu." << std::endl;
     }
     
 }
