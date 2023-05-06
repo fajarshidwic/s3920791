@@ -1,5 +1,6 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
+#include <string>
 #include "Node.h"
 
 
@@ -10,6 +11,8 @@ public:
     ~LinkedList();
 
     // more functions to be added perhaps...
+    Node* getHead();
+
     void addFront(Stock* data);
     void addBack(Stock* data);
     void addAt(Stock* data, unsigned index);

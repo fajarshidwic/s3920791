@@ -36,7 +36,10 @@ void printMainMenu() {
 void purchaseItem(LinkedList* LinkedList);
 void printChange(int change);
 
+void addItem(LinkedList& list);
+
 // delete this function in the final code
+// a sample of how to use Linked List
 void useLinkedList();
 
 int main(int argc, char **argv)
@@ -132,6 +135,7 @@ int main(int argc, char **argv)
                     useLinkedList();
                 }
                 else if (std::stoi(choice) == 1) {
+                    vendingMachine.sort();
                     vendingMachine.printItems();
                     cout << endl;
                 } else if (std::stoi(choice) == 2) {
@@ -141,7 +145,10 @@ int main(int argc, char **argv)
                     exit = true;
                     std::cout << "Save and Exit" << std::endl;
                 } else if (std::stoi(choice) == 4) {
+                    
                     std::cout << "Add Item" << std::endl;
+                    addItem(vendingMachine);
+                    std::cin.clear();
                 } else if (std::stoi(choice) == 5) {
                     std::cout << "Remove Item" << std::endl;
                 } else if (std::stoi(choice) == 6) {
@@ -172,52 +179,6 @@ int main(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 
-// delete this function in the final code
-
-void useLinkedList() {
-    // The stock data should be stored in linked list in this format
-    // Stock(id="", name="", description="", price=0.0, on_hand=20)  defult initialization
-    Stock* stock1 = new Stock("I0001", "Burger", "A cheese burger", 12.99, 10);
-    Stock* stock2 = new Stock("I0002", "Pizza", "A big pizza", 15.99, 10);
-    Stock* stock3 = new Stock("I0003", "Tea", "Black tea", 6.75, 10);
-    Stock* stock4 = new Stock("I0004", "Fruit", "any fruit", 0.95, 10);
-    Stock* stock5 = new Stock("I0005", "Apple Pie", "description", 1.5, 100);
-
-    LinkedList list;
-
-    list.addFront(stock1);
-    list.addBack(stock2);
-    list.addFront(stock3);
-    list.addBack(stock4);
-    list.addAt(stock5, 2); // addAt(data, index) I think it will probably be used rarely
-    // or use this: which the on_hand param has initialized 20 in defult
-    list.addFront(new Stock("I0006", "Lemon Tart", "description", 3.75)); 
-    // print items
-    list.printItems();
-
-    list.removeBack();
-    list.removeFront();
-    list.removeAt(2);
-    list.remove("I0002");
-    list.sort();
-   
-    list.printItems();
-   
-    // get() will return nullptr when id not found
-    Stock* data = list.get("I0003");
-    if (data != nullptr) {
-        std::cout << std::endl;
-        std::cout<< "Name: " << data->name << "\n"
-            << "ID: " << data->id << "\n"
-            << "Stock: "<< data->on_hand << "\n"
-            << "Price: \n"
-            << "\tdollars: "<< data->price.dollars << "\n"
-            << "\tcents: "<< data->price.cents << "\n"
-            << "Description: " << data->description << std::endl;
-    } else {
-        std::cout << "Item not found" << std::endl;
-    }
-};
 
 void purchaseItem(LinkedList* LinkedList) {
     cout << "Purchase Item" << endl;
@@ -309,4 +270,128 @@ void printChange(int change) {
         cout << "5c ";
         change %= 5;
     }
+}
+
+void addItem(LinkedList& list) {
+    bool quit = false;
+    bool cancel = false;
+    std::string maxID = Helper::maxId(list.getHead());
+    std::string newID = Helper::incrementID(maxID);
+    // int stepto = 0;
+    std::string name, description, price_s;
+    std::cout << "The id of the new stock will be: " << newID << std::endl;
+    while (!quit && !cancel) {
+        std::cout << "Enter the item name: ";
+        std::getline(std::cin, name);
+        if (name == "" || std::cin.eof()) {
+            cancel = true;
+        } else {
+            quit = true;
+        }
+    }
+    quit = false;
+    while (!quit && !cancel) {
+        std::cout << "Enter the item description: ";
+        std::getline(std::cin, description);
+        if (description =="" || std::cin.eof()) {
+            cancel = true;
+        } else {
+            quit = true;
+        }
+    }
+    quit = false;
+    double price = 0;
+    while (!quit && !cancel) {
+        std::cout << "Enter the price for the item: ";
+        std::getline(std::cin, price_s);
+        if (price_s == "" || std::cin.eof()) {
+            cancel = true;
+        } else {
+            std::vector<std::string> tokens;
+            price_s = Helper::strip(price_s);
+            if (price_s[0] == '.') {
+                price_s.insert(0, "0");
+            } else if (price_s[price_s.length()-1] == '.') {
+                price_s.append("0");
+            }
+            
+            Helper::splitString(price_s, tokens, ".");
+            if (tokens.size() == 2) {
+                if (!Helper::isInt(tokens[0]) || !Helper::isInt(tokens[1])){
+                    std::cout << "Error: the price is not valid." << std::endl;
+                } else if (std::stoi(tokens[0]) > 99 || std::stoi(tokens[0]) < 0) {
+                    std::cout << "Error: the dollars are out of range." << std::endl;
+                } else if (std::stoi(tokens[1]) > 99 || std::stoi(tokens[1]) < 0) {
+                    std::cout << "Error: the cents are out of range." << std::endl;
+                } else if (std::stoi(tokens[1])%5) {
+                    std::cout << "Error: the cents need to be a multiple of 5." << std::endl;
+                } else {
+                    price = std::stod(price_s);
+                    quit = true;
+                }
+            } else {
+                std::cout << "Error: the price is not valid." << tokens.size() << std::endl;
+            }
+        }
+    }
+    if (cancel) {
+        std::cout << "Cancelling \"add item\" at user's request.\n"
+                << "The task Add Item failed to run successfully."
+                << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return;
+    } else {
+        list.addBack(new Stock(newID, name, description, price));
+    }
+    
+}
+
+// delete this function in the final code
+
+void useLinkedList() {
+    // The stock data should be stored in linked list in this format
+    // Stock(id="", name="", description="", price=0.0, on_hand=20)  defult initialization
+    Stock* stock1 = new Stock("I0001", "Burger", "A cheese burger", 12.99, 10);
+    Stock* stock2 = new Stock("I0002", "Pizza", "A big pizza", 15.99, 10);
+    Stock* stock3 = new Stock("I0003", "Tea", "Black tea", 6.75, 10);
+    Stock* stock4 = new Stock("I0004", "Fruit", "any fruit", 0.95, 10);
+    Stock* stock5 = new Stock("I0005", "Apple Pie", "description", 1.5, 100);
+
+    LinkedList list;
+
+    list.addFront(stock1);
+    list.addBack(stock2);
+    list.addFront(stock3);
+    list.addBack(stock4);
+    list.addAt(stock5, 2); // addAt(data, index) I think it will probably be used rarely
+    // or use this: which the on_hand param has initialized 20 in defult
+    list.addFront(new Stock("I0006", "Lemon Tart", "description", 3.75)); 
+    // print items
+    list.printItems();
+
+    list.removeBack();
+    list.removeFront();
+    list.removeAt(2);
+    list.remove("I0002");
+    list.sort();
+   
+    list.printItems();
+   
+    // get() will return nullptr when id not found
+    Stock* data = list.get("I0003");
+    if (data != nullptr) {
+        std::cout << std::endl;
+        std::cout<< "Name: " << data->name << "\n"
+            << "ID: " << data->id << "\n"
+            << "Stock: "<< data->on_hand << "\n"
+            << "Price: \n"
+            << "\tdollars: "<< data->price.dollars << "\n"
+            << "\tcents: "<< data->price.cents << "\n"
+            << "Description: " << data->description << std::endl;
+            data->on_hand -= 1;
+    } else {
+        std::cout << "Item not found" << std::endl;
+    }
+    list.printItems();
 }

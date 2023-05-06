@@ -6,9 +6,10 @@
 #include <cassert>
 #include <sstream>
 #include <vector>
-#include <iostream>
+#include <iomanip>
 #include <string.h>
 #include <random>
+#include "LinkedList.h"
 
 class Helper
 {
@@ -53,5 +54,39 @@ public:
      * @return s
      */
     static std::string strip(std::string& s);
+
+    /**
+     * @brief This function is to get the max id in the linked list to help generate a new id when select Add Item
+     * 
+     * @param head the head of the linked list
+     * @return string 
+     */
+    static std::string maxId (Node* head);
+
+    /**
+     * @brief id increment
+     * 
+     * @param id id
+     * @return string 
+     */
+    static std::string incrementID(std::string id);
+
+    /**
+     * @brief check if input content is double-type
+     * 
+     * @param input detected content
+     * @return true 
+     * @return false 
+     */
+    static bool isDouble(std::string& input);
+
+    /**
+     * @brief check if input content is int-type
+     *
+     * @param input detected content
+     * @return true
+     * @return false
+     */
+    static bool isInt(const std::string& input);
 };
 #endif

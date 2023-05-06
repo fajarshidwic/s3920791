@@ -76,3 +76,56 @@ string Helper::strip(std::string& s) {
     }
     return s;
 }
+
+std::string Helper::maxId(Node* head) {
+    if (head == nullptr) {
+        return "I0000";
+    } else {
+        std::string temp_id = head->data->id;
+        if (maxId(head->next) > temp_id){
+            temp_id = maxId(head->next);
+        }
+        return temp_id;
+    }
+}
+
+std::string Helper::incrementID(std::string id) {
+    char prefix;
+    int number;
+    std::stringstream ss(id);
+
+    ss >> prefix >> number;
+    number++;
+
+    std::stringstream newId;
+    newId << prefix << std::setw(4) << std::setfill('0') << number;
+
+    return newId.str();
+}
+
+bool Helper::isDouble(std::string& input) {
+    bool retVal = true;
+    int dotNum = 0;
+    for (int i = 0; i < input.length(); ++i){
+        if (!isdigit(input[i]) && (char)input[i] != '.'){
+            retVal = false;
+        }
+        if ((char)input[i] == '.'){
+            dotNum += 1;
+        }
+    }
+    if (dotNum > 1){
+        retVal = false;
+    }
+    return retVal;
+}
+
+bool Helper::isInt(const std::string& input) {
+    bool retVal = true;
+    for (int i = 0; i < input.length(); ++i){
+        if (!isdigit(input[i])){
+            retVal = false;
+        }
+    }
+    return retVal;
+}

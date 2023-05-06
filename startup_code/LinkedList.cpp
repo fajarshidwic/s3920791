@@ -22,6 +22,10 @@ LinkedList::~LinkedList() {
     }
 }
 
+Node* LinkedList::getHead() {
+    return head;
+}
+
 void LinkedList::addFront(Stock* data) {
     Node* newNode = new Node(data, head);
     this->head = newNode;
@@ -167,7 +171,11 @@ void LinkedList::printItems() {
         cout << std::left << std::setw(5) << current->data->id
             << "|" << std::setw(40) << current->data->name
             << "|" << std::setw(11) << current->data->on_hand
-            << "|$ " << current->data->price.dollars << '.' << std::setw(2) << std::setfill('0') << current->data->price.cents
+            << "|$";
+        if (current->data->price.dollars < 10) {
+            cout << " ";
+        }
+        cout << current->data->price.dollars << '.' << std::setw(2) << std::setfill('0') << current->data->price.cents
             << std::setfill(' ')
             << endl;
         current = current->next;
