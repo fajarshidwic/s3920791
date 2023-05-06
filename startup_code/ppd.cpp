@@ -125,7 +125,8 @@ int main(int argc, char **argv)
         choice = Helper::readInput();
         if (!std::cin.eof()) {
             bool isInt = true;
-            for (int i = 0; i < choice.length(); ++i){
+            int choiceLen = choice.length();
+            for (int i = 0; i < choiceLen; ++i){
                 if (!isdigit(choice.at(i))){
                     isInt = false;
                 }
@@ -181,53 +182,73 @@ int main(int argc, char **argv)
 
 
 void purchaseItem(LinkedList* LinkedList) {
+
     cout << "Purchase Item" << endl;
     cout << "-------------" << endl;
     cout << "Please enter the id of the item you wish to purchase:";
+
     std::string itemId;
     std::getline(std::cin, itemId);
     Helper::strip(itemId);
+
     Stock* item = (*LinkedList).get(itemId);
+
     if ((item != nullptr) & (item->on_hand > 0)) {
+
         // Printing the item
         cout << "You have selected \"";
         cout << item->name;
         cout << " - ";
         cout << item->description;
         cout << "\". This will cost you $ ";
+
         // Set local variables.
         // Price cost = item->price;
         int dollar = item->price.dollars;
         int cent = item->price.cents;
         string money = std::to_string(dollar) + "." + std::to_string(cent);
         cout << money << "." << endl;
+
         // Continuation
         cout << "Please hand over the money - type in the value of each note/coin in cents.\nPress enter or ctrl-d on a new line to cancel this purchase:\n";
-        // Test variable
-        bool validAnswer = true;
-        string inputMoney;
-        int change = dollar*100 + cent;
-        while (validAnswer) {
-            dollar = change / 100;
-            cent = change % 100;
-            cout << "You still need to give us $" << dollar << "." << cent << ": ";
-            std::getline(std::cin, inputMoney);
-            Helper::strip(inputMoney);
-            // Base termination case:
-            if ((std::cin.eof()) || (inputMoney == "")) {
-                cout << "Pressed crtl-d or enter" << endl;
-                validAnswer = false;
+        
+        bool paidFor = false;
+        int remainingCost = (dollar * 100) + cent;
+        string moneyIn;
+
+        // Loop until the item has been paidFor or the user has terminated the loop
+        while (paidFor == false) {
+            dollar = remainingCost / 100;
+            cent = remainingCost % 100;
+
+            cout << "Remaining Cost: $" << dollar << "." << cent << ": ";
+            moneyIn = Helper::readInput();
+            Helper::strip(moneyIn);
+
+            int coinValues[8] = {5, 10, 20, 50, 100, 200, 500, 1000};
+            int arrLen = sizeof(coinValues) / sizeof(int);
+            bool validDenomination = false;
+
+            for (int idx = 0; idx < arrLen; idx++) {
+                if (stoi(moneyIn) == coinValues[idx]) {
+                    validDenomination = true;
+                }
             }
-            // Success case:
-            else {
-                change = change - std::stoi(inputMoney);
-                if (change <= 0) {
-                    change = abs(change);
-                    cout << change << endl;
-                    cout << "Here is your " << item->name << " and your change of $ " << change / 100 << "." << change % 100 << ": ";
-                    printChange(change);
-                    cout << endl;
-                    validAnswer = false;
+
+            if ((cin.eof()) || (moneyIn == "")) {
+                // Base termination case
+                cout << "Pressed ctrl-D or enter" << endl;
+                paidFor = true;
+            } else if (validDenomination == false) {
+                cout << "That is not a valid denomination" << endl;
+            } else {
+                // Valid Input
+                remainingCost -= stoi(moneyIn);
+                if (remainingCost <= 0) {
+                    // User has paid for the item
+                    paidFor = true;
+                    int change = abs(remainingCost);
+                    cout << "Here is your " << item->name << " and your change of $ " << change / 100 << "." << change % 100 << ": " << endl;
                 }
             }
         }

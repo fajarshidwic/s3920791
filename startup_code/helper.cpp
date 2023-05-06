@@ -106,7 +106,8 @@ std::string Helper::incrementID(std::string id) {
 bool Helper::isDouble(std::string& input) {
     bool retVal = true;
     int dotNum = 0;
-    for (int i = 0; i < input.length(); ++i){
+    int inputLen = input.length();
+    for (int i = 0; i < inputLen; ++i){
         if (!isdigit(input[i]) && (char)input[i] != '.'){
             retVal = false;
         }
@@ -122,7 +123,8 @@ bool Helper::isDouble(std::string& input) {
 
 bool Helper::isInt(const std::string& input) {
     bool retVal = true;
-    for (int i = 0; i < input.length(); ++i){
+    int inputLen = input.length();
+    for (int i = 0; i < inputLen; ++i){
         if (!isdigit(input[i])){
             retVal = false;
         }
