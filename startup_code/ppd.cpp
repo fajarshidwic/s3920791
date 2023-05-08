@@ -111,11 +111,6 @@ int main(int argc, char **argv)
             cout << "Unable to open coin file" << endl;
         }
     }
-    
-    // Testing
-    if (allowedArgs) {
-        // purchaseItem(&vendingMachine);
-    }
 
     string choice = "-1";
     bool exit = false;
