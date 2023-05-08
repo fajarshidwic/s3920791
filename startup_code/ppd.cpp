@@ -37,7 +37,7 @@ void purchaseItem(LinkedList* LinkedList);
 void printChange(int change);
 
 void addItem(LinkedList& list);
-
+void resetStock(LinkedList& list);
 // delete this function in the final code
 // a sample of how to use Linked List
 void useLinkedList();
@@ -59,8 +59,8 @@ int main(int argc, char **argv)
     // Adding requried documents.
     else {
         // Reading the data inserted.
-        string coinsDat = argv[1];
-        string stockDat = argv[2];
+        string coinsDat = argv[2];
+        string stockDat = argv[1];
         // Reading files
         string line;
         // Save the stock file as a linked list.
@@ -151,6 +151,7 @@ int main(int argc, char **argv)
                     std::cout << "Display Coins" << std::endl;
                 } else if (std::stoi(choice) == 7) {
                     std::cout << "Reset Stock" << std::endl;
+                    resetStock(vendingMachine);
                 } else if (std::stoi(choice) == 8) {
                     std::cout << "Reset Coins" << std::endl;
                 } else if (std::stoi(choice) == 9) {
@@ -346,7 +347,7 @@ void addItem(LinkedList& list) {
                     quit = true;
                 }
             } else {
-                std::cout << "Error: the price is not valid." << tokens.size() << std::endl;
+                std::cout << "Error: the price is not valid." << std::endl;
             }
         }
     }
@@ -354,7 +355,7 @@ void addItem(LinkedList& list) {
         std::cout << "Cancelling \"add item\" at user's request.\n"
                 << "The task Add Item failed to run successfully."
                 << std::endl;
-        std::cin.clear();
+        clearerr(stdin);
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return;
     } else {
@@ -363,6 +364,15 @@ void addItem(LinkedList& list) {
     }
     
 }
+
+void resetStock(LinkedList& list){
+    Node* upto = list.getHead();
+    while (upto != nullptr) {
+        upto->data->on_hand = DEFAULT_STOCK_LEVEL;
+        upto = upto->next;
+    }
+}
+
 
 // delete this function in the final code
 
