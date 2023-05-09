@@ -202,7 +202,6 @@ void LinkedList::printItems(std::ostream& outfile) {
             << endl;
         current = current->next;
     }
-
 }
 
 // Helper Functions
