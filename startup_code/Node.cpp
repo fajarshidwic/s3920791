@@ -5,7 +5,7 @@ Stock::Stock(std::string id, std::string name, std::string description, double p
 {
     price = price * 100;
     this->price.dollars = int(price / 100);
-    this->price.cents = int(price - this->price.dollars*100);
+    this->price.cents = int(round(price - this->price.dollars*100));
 }
 
 Stock::~Stock(){

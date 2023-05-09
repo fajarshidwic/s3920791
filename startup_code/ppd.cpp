@@ -353,6 +353,9 @@ void addItem(LinkedList& list) {
             
             Helper::splitString(price_s, tokens, ".");
             if (tokens.size() == 2) {
+                if (tokens[1].length() == 1) {
+                    tokens[1] += "0";
+                }
                 if (!Helper::isInt(tokens[0]) || !Helper::isInt(tokens[1])){
                     std::cout << "Error: the price is not valid." << std::endl;
                 } else if (std::stoi(tokens[0]) > 99 || std::stoi(tokens[0]) < 0) {
