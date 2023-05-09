@@ -33,7 +33,7 @@ void printMainMenu() {
 }
 void loadItem(char **argv, LinkedList& vendingMachine);
 
-void saveItem(std::string outFileName, LinkedList vendingMachine);
+void saveItem(std::string outFileName, LinkedList& vendingMachine);
 
 // This is the purchase item function.
 void purchaseItem(LinkedList* LinkedList);
@@ -192,7 +192,7 @@ void loadItem(char **argv, LinkedList& vendingMachine){
     }
 }
 
-void saveItem(std::string outFileName, LinkedList vendingMachine) {
+void saveItem(std::string outFileName, LinkedList& vendingMachine) {
    std::ofstream outfile(outFileName);
    vendingMachine.printItems(outfile);
 }
