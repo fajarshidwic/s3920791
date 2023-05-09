@@ -31,6 +31,9 @@ void printMainMenu() {
             << "\t9. Abort Program\n"
             << "Select your option (1-9):";
 }
+void loadItem(char **argv, LinkedList& vendingMachine);
+
+void saveItem(std::string outFileName, LinkedList vendingMachine);
 
 // This is the purchase item function.
 void purchaseItem(LinkedList* LinkedList);
@@ -52,70 +55,17 @@ int main(int argc, char **argv)
 {
     // Make the vending machine linked list.
     LinkedList vendingMachine;
-    // Holds the coin values.
-    int coinDenomination = 8;
-    int* coinPurse = new int[coinDenomination];
-    int* coinValues = new int[coinDenomination];
     /* validate command line arguments */
     bool allowedArgs = true;
+   //  save vending machine items in an output file
+    std::string outFileName = "output.txt";
     if (argc != 3) {
         cout << "You may have not entered the right arguments." << endl;
         allowedArgs = false;
     }
     // Adding requried documents.
     else {
-        // Reading the data inserted.
-        string coinsDat = argv[2];
-        string stockDat = argv[1];
-        // Reading files
-        string line;
-        // Save the stock file as a linked list.
-        ifstream myfile(stockDat);
-        if (myfile.is_open()) {
-            while (getline(myfile, line)) {
-                // Local variables
-                string item_id, item_name, item_desc;
-                double item_price;
-                int item_stock;
-                // Split string function by delimter.
-                std::vector<std::string> stockTokens;
-                string delimiter = "|";
-                Helper::splitString(line,stockTokens,delimiter);
-                // Giving values
-                item_id = stockTokens[0];
-                item_name = stockTokens[1];
-                item_desc = stockTokens[2];
-                item_price = std::stod(stockTokens[3]);
-                item_stock = std::stoi(stockTokens[4]);
-                // Create node
-                Stock* stock = new Stock(item_id, item_name, item_desc, item_price, item_stock);
-                // Append node to end of linked list
-                vendingMachine.addBack(stock);
-            }
-            // Failed to open
-            myfile.close();
-        }
-        else {
-            allowedArgs = false;
-            cout << "Unable to open stock file" << endl;
-        }
-        // Save the coin file as array since fixed array size of eight.
-        ifstream coinFile(coinsDat);
-        if (coinFile.is_open()) {
-            int count = 0;
-            while (getline(coinFile, line)) {
-                std::vector<std::string> coinToken;
-                string delimiter = ",";
-                Helper::splitString(line,coinToken,delimiter);
-                coinValues[count] = std::stoi(coinToken[0]);
-                coinPurse[count] = std::stoi(coinToken[1]);
-            }
-            coinFile.close();
-        }
-        else {
-            allowedArgs = false;
-            cout << "Unable to open coin file" << endl;
-        }
+        loadItem(argv, vendingMachine);
     }
 
     string choice = "-1";
@@ -137,7 +87,6 @@ int main(int argc, char **argv)
                     useLinkedList();
                 }
                 else if (std::stoi(choice) == 1) {
-                    // This case shows the items on the system.
                     vendingMachine.sort();
                     vendingMachine.printItems();
                     cout << endl;
@@ -146,20 +95,21 @@ int main(int argc, char **argv)
                     purchaseItem(&vendingMachine);
                 } else if (std::stoi(choice) == 3) {
                     exit = true;
+                  //   del || later
+                  //       \/
+                    saveItem(outFileName, vendingMachine);
                     std::cout << "Save and Exit" << std::endl;
                 } else if (std::stoi(choice) == 4) {
+                    
                     std::cout << "Add Item" << std::endl;
                     addItem(vendingMachine);
                     std::cin.clear();
                 } else if (std::stoi(choice) == 5) {
-                    // This case delete an item using itemID.
-                    removeItem(vendingMachine);
+                    std::cout << "Remove Item" << std::endl;
                 } else if (std::stoi(choice) == 6) {
-                    // TODO: This case shows all coins in the system.
-                    displayCoin();
+                    std::cout << "Display Coins" << std::endl;
                 } else if (std::stoi(choice) == 7) {
                     std::cout << "Reset Stock" << std::endl;
-                    resetStock(vendingMachine);
                 } else if (std::stoi(choice) == 8) {
                     std::cout << "Reset Coins" << std::endl;
                 } else if (std::stoi(choice) == 9) {
@@ -184,6 +134,74 @@ int main(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 
+void loadItem(char **argv, LinkedList& vendingMachine){
+   // Reading the data inserted.
+   bool allowedArgs = true;
+   // Holds the coin values.
+   int coinDenomination = 8;
+   int* coinPurse = new int[coinDenomination];
+   int* coinValues = new int[coinDenomination];
+   string coinsDat = argv[1];
+   string stockDat = argv[2];
+   // Reading files
+   string line;
+   // Save the stock file as a linked list.
+   ifstream myfile(stockDat);
+   if (myfile.is_open()) {
+      while (getline(myfile, line)) {
+            // Local variables
+            string item_id, item_name, item_desc;
+            double item_price;
+            int item_stock;
+            // Split string function by delimter.
+            std::vector<std::string> stockTokens;
+            string delimiter = "|";
+            Helper::splitString(line,stockTokens,delimiter);
+            // Giving values
+            item_id = stockTokens[0];
+            item_name = stockTokens[1];
+            item_desc = stockTokens[2];
+            item_price = std::stod(stockTokens[3]);
+            item_stock = std::stoi(stockTokens[4]);
+            // Create node
+            Stock* stock = new Stock(item_id, item_name, item_desc, item_price, item_stock);
+            // Append node to end of linked list
+            vendingMachine.addBack(stock);
+      }
+      // Failed to open
+      myfile.close();
+   }
+   else {
+      allowedArgs = false;
+      cout << "Unable to open stock file" << endl;
+   }
+   // Save the coin file as array since fixed array size of eight.
+   ifstream coinFile(coinsDat);
+   if (coinFile.is_open()) {
+      int count = 0;
+      while (getline(coinFile, line)) {
+            std::vector<std::string> coinToken;
+            string delimiter = ",";
+            Helper::splitString(line,coinToken,delimiter);
+            coinValues[count] = std::stoi(coinToken[0]);
+            coinPurse[count] = std::stoi(coinToken[1]);
+      }
+      coinFile.close();
+   }
+   else {
+      allowedArgs = false;
+      cout << "Unable to open coin file" << endl;
+   }
+
+   if (allowedArgs) {
+        std::cout << "\nStocks added!" << std::endl;
+    }
+}
+
+void saveItem(std::string outFileName, LinkedList vendingMachine) {
+   std::ofstream outfile(outFileName);
+   vendingMachine.printItems(outfile);
+}
 
 void purchaseItem(LinkedList* LinkedList) {
 

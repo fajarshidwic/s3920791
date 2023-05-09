@@ -183,6 +183,27 @@ void LinkedList::printItems() {
     
 }
 
+void LinkedList::printItems(std::ostream& outfile) {
+    Node* current = head;
+    outfile << "Items Menu" << endl;
+    outfile << "----------" << endl;
+    outfile << "ID   |Name                                    | Available | Price" << endl;
+    outfile << "-----------------------------------------------------------------" << endl;
+    for (unsigned i=0; i<count; ++i) {
+        outfile << std::left << std::setw(5) << current->data->id
+            << "|" << std::setw(40) << current->data->name
+            << "|" << std::setw(11) << current->data->on_hand
+            << "|$";
+        if (current->data->price.dollars < 10) {
+            outfile << " ";
+        }
+        outfile << current->data->price.dollars << '.' << std::setw(2) << std::setfill('0') << current->data->price.cents
+            << std::setfill(' ')
+            << endl;
+        current = current->next;
+    }
+    
+}
 
 
 // Helper Functions
