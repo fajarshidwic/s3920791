@@ -31,7 +31,7 @@ void printMainMenu() {
             << "\t9. Abort Program\n"
             << "Select your option (1-9):";
 }
-void loadItem(char **argv);
+void loadItem(char **argv, LinkedList& vendingMachine);
 
 // This is the purchase item function.
 void purchaseItem(LinkedList* LinkedList);
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     }
     // Adding requried documents.
     else {
-        loadItem(argv);
+        loadItem(argv, vendingMachine);
     }
 
     string choice = "-1";
@@ -121,10 +121,9 @@ int main(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 
-void loadItem(char **argv){
+void loadItem(char **argv, LinkedList& vendingMachine){
    // Reading the data inserted.
    bool allowedArgs = true;
-   LinkedList vendingMachine;
    // Holds the coin values.
    int coinDenomination = 8;
    int* coinPurse = new int[coinDenomination];
@@ -182,7 +181,7 @@ void loadItem(char **argv){
    }
 
    if (allowedArgs) {
-        std::cout << "\nJust a test, nothing implemented yet!" << std::endl;
+        std::cout << "\nStocks added!" << std::endl;
     }
 }
 void purchaseItem(LinkedList* LinkedList) {
