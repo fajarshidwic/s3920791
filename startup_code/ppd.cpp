@@ -379,6 +379,7 @@ void addItem(LinkedList& list) {
     
 }
 
+// TODO: ensure that the memory used to store this is removed.
 void removeItem(LinkedList& list) {
     cout << "Enter the item id of the item to remove from the menu: ";
     std::string item;
