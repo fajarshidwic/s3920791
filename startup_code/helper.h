@@ -88,5 +88,24 @@ public:
      * @return false
      */
     static bool isInt(const std::string& input);
+
+    /**
+     * @brief Creates a --- line according to the size.
+     *
+     * @param amount the given string of size of the border.
+     * @return s a string containing the "---" according to the amount given.
+     */
+    static std::string printBorder(int amount);
+    
+    /**
+     * @brief writes string on for a given string size. Also, can work for left or right side.
+     * 
+     * @param amount the string size to use
+     * @param s the string to insert into the string excluding white space.
+     * @param left true mean that its on the left side, else false mean its on the right side.
+     * 
+     * @return s a string containing white space and string.
+    */
+    static std::string writeOnSize(int amount, std::string s, bool left);
 };
 #endif

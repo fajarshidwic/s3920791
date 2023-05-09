@@ -40,13 +40,17 @@ void printChange(int change);
 void addItem(LinkedList& list);
 void resetStock(LinkedList& list);
 void removeItem(LinkedList& list);
+
+// About coins
+void displayCoin();
+
 // delete this function in the final code
 // a sample of how to use Linked List
 void useLinkedList();
 
 int main(int argc, char **argv)
 {
-    // make the vending machine linked list.
+    // Make the vending machine linked list.
     LinkedList vendingMachine;
     // Holds the coin values.
     int coinDenomination = 8;
@@ -151,7 +155,8 @@ int main(int argc, char **argv)
                     // This case delete an item using itemID.
                     removeItem(vendingMachine);
                 } else if (std::stoi(choice) == 6) {
-                    std::cout << "Display Coins" << std::endl;
+                    // TODO: This case shows all coins in the system.
+                    displayCoin();
                 } else if (std::stoi(choice) == 7) {
                     std::cout << "Reset Stock" << std::endl;
                     resetStock(vendingMachine);
@@ -407,8 +412,19 @@ void resetStock(LinkedList& list){
     }
 }
 
-// delete this function in the final code
+// TODO: Has to have a way to read coins kept.
+void displayCoin() {
+    cout << "Coins Summary" << endl;
+    cout << Helper::printBorder(13);
+    cout << "Denomination    |    Count" << endl;
+    // Denom side == 16, count side == 10, Total = 27.
+    cout << Helper::printBorder(27);
+    cout << Helper::writeOnSize(16, "5 Cents", true) << "|" << Helper::writeOnSize(10, "20", false) << endl;
+}
 
+
+
+// delete this function in the final code
 void useLinkedList() {
     // The stock data should be stored in linked list in this format
     // Stock(id="", name="", description="", price=0.0, on_hand=20)  defult initialization

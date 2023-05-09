@@ -131,3 +131,34 @@ bool Helper::isInt(const std::string& input) {
     }
     return retVal;
 }
+
+std::string Helper::printBorder(int amount) {
+    int n = amount;
+    std::string s = "";
+    for(int i=0;i<n;i++)
+    {
+        s += "-";
+    }
+    s += "\n";
+    return s;
+}
+
+std::string Helper::writeOnSize(int amount, std::string s, bool left) {
+    // Assign the value given to new line.
+    std::string newLine = s;
+    // Get the amount of white space needed.
+    int emptyWhite = amount - s.length();
+    if (left) {
+        for(int i=0;i<emptyWhite;i++)
+        {
+            newLine += " ";
+        }
+    }
+    else {
+        for(int i=0;i<emptyWhite;i++)
+        {
+            newLine = " " + newLine;
+        }
+    }
+    return newLine;
+}
