@@ -225,6 +225,7 @@ void purchaseItem(LinkedList* LinkedList) {
             moneyIn = Helper::readInput();
             Helper::strip(moneyIn);
 
+            vector<int> coinsToAdd;
             int coinValues[8] = {5, 10, 20, 50, 100, 200, 500, 1000};
             int arrLen = sizeof(coinValues) / sizeof(int);
             bool validDenomination = false;
@@ -233,7 +234,7 @@ void purchaseItem(LinkedList* LinkedList) {
                 if (stoi(moneyIn) == coinValues[idx]) {
                     validDenomination = true;
                 }
-            }
+            } 
 
             if ((cin.eof()) || (moneyIn == "")) {
                 // Base termination case
@@ -244,11 +245,21 @@ void purchaseItem(LinkedList* LinkedList) {
             } else {
                 // Valid Input
                 remainingCost -= stoi(moneyIn);
+
+                // Add input to sumVector
+                coinsToAdd.push_back(stoi(moneyIn));
+
                 if (remainingCost <= 0) {
                     // User has paid for the item
                     paidFor = true;
                     int change = abs(remainingCost);
-                    cout << "Here is your " << item->name << " and your change of $ " << change / 100 << "." << change % 100 << ": " << endl;
+                    cout << "Here is your " << item->name << " and your change of $" << change / 100 << "." << change % 100 << ": ";
+                    printChange(change);
+                    cout << endl;
+                
+                    // to add
+                    // removing stock
+                    // removing coins from purse
                 }
             }
         }
