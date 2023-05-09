@@ -36,8 +36,10 @@ void printMainMenu() {
 void purchaseItem(LinkedList* LinkedList);
 void printChange(int change);
 
+// This is to handle stock.
 void addItem(LinkedList& list);
 void resetStock(LinkedList& list);
+void removeItem(LinkedList& list);
 // delete this function in the final code
 // a sample of how to use Linked List
 void useLinkedList();
@@ -131,6 +133,7 @@ int main(int argc, char **argv)
                     useLinkedList();
                 }
                 else if (std::stoi(choice) == 1) {
+                    // This case shows the items on the system.
                     vendingMachine.sort();
                     vendingMachine.printItems();
                     cout << endl;
@@ -141,12 +144,12 @@ int main(int argc, char **argv)
                     exit = true;
                     std::cout << "Save and Exit" << std::endl;
                 } else if (std::stoi(choice) == 4) {
-                    
                     std::cout << "Add Item" << std::endl;
                     addItem(vendingMachine);
                     std::cin.clear();
                 } else if (std::stoi(choice) == 5) {
-                    std::cout << "Remove Item" << std::endl;
+                    // This case delete an item using itemID.
+                    removeItem(vendingMachine);
                 } else if (std::stoi(choice) == 6) {
                     std::cout << "Display Coins" << std::endl;
                 } else if (std::stoi(choice) == 7) {
@@ -376,6 +379,25 @@ void addItem(LinkedList& list) {
     
 }
 
+void removeItem(LinkedList& list) {
+    cout << "Enter the item id of the item to remove from the menu: ";
+    std::string item;
+    std::getline(std::cin, item);
+    Stock* itemInfo = list.get(item);
+    if (itemInfo != nullptr) {
+        cout << "\"";
+        cout << itemInfo->id;
+        cout << " - ";
+        cout << itemInfo->name;
+        cout << " - ";
+        cout << itemInfo->description;
+        cout << "\" has been removed from the system." << endl;
+        list.remove(item);
+    } else {
+        cout << "That item does not exist in system." << endl;
+    }
+}
+
 void resetStock(LinkedList& list){
     Node* upto = list.getHead();
     while (upto != nullptr) {
@@ -383,7 +405,6 @@ void resetStock(LinkedList& list){
         upto = upto->next;
     }
 }
-
 
 // delete this function in the final code
 
