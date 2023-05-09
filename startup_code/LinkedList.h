@@ -33,6 +33,7 @@ public:
     void sort();
 
     void printItems();
+    void printItems(std::ostream& outfile);
 
 private:
     // the beginning of the list

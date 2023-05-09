@@ -31,7 +31,7 @@ void printMainMenu() {
             << "\t9. Abort Program\n"
             << "Select your option (1-9):";
 }
-
+void saveItem(std::string outFileName, LinkedList& vendingMachine);
 // This is the purchase item function.
 void purchaseItem(LinkedList* LinkedList);
 void printChange(int change);
@@ -58,6 +58,8 @@ int main(int argc, char **argv)
     int* coinValues = new int[coinDenomination];
     /* validate command line arguments */
     bool allowedArgs = true;
+    //  save vending machine items in an output file
+    std::string outFileName = "output.txt";
     if (argc != 3) {
         cout << "You may have not entered the right arguments." << endl;
         allowedArgs = false;
@@ -147,6 +149,7 @@ int main(int argc, char **argv)
                 } else if (std::stoi(choice) == 3) {
                     exit = true;
                     std::cout << "Save and Exit" << std::endl;
+                    saveItem(outFileName, vendingMachine);
                 } else if (std::stoi(choice) == 4) {
                     std::cout << "Add Item" << std::endl;
                     addItem(vendingMachine);
@@ -184,6 +187,10 @@ int main(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 
+void saveItem(std::string outFileName, LinkedList& vendingMachine) {
+   std::ofstream outfile(outFileName);
+   vendingMachine.printItems(outfile);
+}
 
 void purchaseItem(LinkedList* LinkedList) {
 
