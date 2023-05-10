@@ -8,6 +8,7 @@ using std::endl;
 LinkedList::LinkedList() {
     head = nullptr;
     count = 0;
+    purse = new Coin[8];
 }
 
 LinkedList::~LinkedList() {
@@ -20,6 +21,7 @@ LinkedList::~LinkedList() {
         delete current;
         current = next;
     }
+    delete[] purse;
 }
 
 Node* LinkedList::getHead() {
