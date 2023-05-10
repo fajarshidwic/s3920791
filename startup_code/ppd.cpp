@@ -182,6 +182,7 @@ void loadItem(char **argv, LinkedList& vendingMachine){
                 Helper::splitString(coinLine,coinToken,delimiter);
                 // Check if the coins file is a correct input.
                 vendingMachine.purse[count].count = std::stoi(coinToken[1]);
+                // TODO: make this actually read the results
                 vendingMachine.purse[count].denom = Denomination(7 - count);
                 count += 1;
         }
