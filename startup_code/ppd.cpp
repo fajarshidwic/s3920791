@@ -286,6 +286,8 @@ void purchaseItem(LinkedList* LinkedList) {
                 
                     // to add
                     // removing stock
+                    item->on_hand -= 1;
+
                     // removing coins from purse
                 }
             }
