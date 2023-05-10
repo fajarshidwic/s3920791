@@ -33,7 +33,7 @@ void printMainMenu() {
 }
 void loadItem(char **argv, LinkedList& vendingMachine);
 
-void saveItem(std::string outFileName, LinkedList vendingMachine);
+void saveItem(std::string outFileName, LinkedList& vendingMachine);
 
 // This is the purchase item function.
 void purchaseItem(LinkedList* LinkedList);
@@ -95,8 +95,6 @@ int main(int argc, char **argv)
                     purchaseItem(&vendingMachine);
                 } else if (std::stoi(choice) == 3) {
                     exit = true;
-                  //   del || later
-                  //       \/
                     saveItem(outFileName, vendingMachine);
                     std::cout << "Save and Exit" << std::endl;
                 } else if (std::stoi(choice) == 4) {
@@ -201,7 +199,7 @@ void loadItem(char **argv, LinkedList& vendingMachine){
     }
 }
 
-void saveItem(std::string outFileName, LinkedList vendingMachine) {
+void saveItem(std::string outFileName, LinkedList& vendingMachine) {
    std::ofstream outfile(outFileName);
    vendingMachine.printItems(outfile);
 }
