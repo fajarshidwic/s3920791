@@ -18,7 +18,6 @@ using namespace std;
 
 void printMainMenu() {
     std::cout << "Main Menu:\n" 
-            << "\t0. test Linked List\n" // delete this in the final code
             << "\t1. Display Items\n" 
             << "\t2. Purchase Items\n" 
             << "\t3. Save and Exit\n" 
@@ -83,10 +82,7 @@ int main(int argc, char **argv)
                 }
             }
             if (isInt && choice != "") {
-                if (std::stoi(choice) == 0) {
-                    useLinkedList();
-                }
-                else if (std::stoi(choice) == 1) {
+                if (std::stoi(choice) == 1) {
                     vendingMachine.sort();
                     vendingMachine.printItems();
                     cout << endl;
@@ -124,11 +120,6 @@ int main(int argc, char **argv)
                 // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             }
         }
-    }
-    
-    // This stops it from showing when not fitting condition
-    if (allowedArgs) {
-        std::cout << "\nJust a test, nothing implemented yet!" << std::endl;
     }
     
     return EXIT_SUCCESS;
@@ -436,7 +427,6 @@ void resetStock(LinkedList& list){
     }
 }
 
-// TODO: Has to have a way to read coins kept.
 // Condition: the coins arrive presorted.
 void displayCoin(LinkedList& list) {
     cout << "Coins Summary" << endl;
