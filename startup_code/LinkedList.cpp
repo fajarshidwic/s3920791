@@ -186,6 +186,7 @@ void LinkedList::printItems() {
 }
 
 void LinkedList::printItems(std::ostream& outfile) {
+    sort();
     Node* current = head;
     outfile << "Items Menu" << endl;
     outfile << "----------" << endl;

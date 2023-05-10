@@ -109,7 +109,7 @@ int main(int argc, char **argv)
                     // This case shows coins in system.
                     displayCoin(vendingMachine);
                 } else if (std::stoi(choice) == 7) {
-                    std::cout << "Reset Stock" << std::endl;
+                    resetStock(vendingMachine);
                 } else if (std::stoi(choice) == 8) {
                     std::cout << "Reset Coins" << std::endl;
                 } else if (std::stoi(choice) == 9) {
@@ -137,8 +137,8 @@ int main(int argc, char **argv)
 void loadItem(char **argv, LinkedList& vendingMachine){
    // Reading the data inserted.
    bool allowedArgs = true;
-   string coinsDat = argv[1];
-   string stockDat = argv[2];
+   string coinsDat = argv[2];
+   string stockDat = argv[1];
    // Reading files
    string stockLine;
    // Save the stock file as a linked list.
