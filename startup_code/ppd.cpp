@@ -142,11 +142,11 @@ void loadItem(char **argv, LinkedList& vendingMachine){
    string coinsDat = argv[1];
    string stockDat = argv[2];
    // Reading files
-   string line;
+   string stockLine;
    // Save the stock file as a linked list.
    ifstream myfile(stockDat);
    if (myfile.is_open()) {
-      while (getline(myfile, line)) {
+      while (getline(myfile, stockLine)) {
             // Local variables
             string item_id, item_name, item_desc;
             double item_price;
@@ -154,7 +154,7 @@ void loadItem(char **argv, LinkedList& vendingMachine){
             // Split string function by delimter.
             std::vector<std::string> stockTokens;
             string delimiter = "|";
-            Helper::splitString(line,stockTokens,delimiter);
+            Helper::splitString(stockLine,stockTokens,delimiter);
             // Giving values
             item_id = stockTokens[0];
             item_name = stockTokens[1];
@@ -173,14 +173,15 @@ void loadItem(char **argv, LinkedList& vendingMachine){
       allowedArgs = false;
       cout << "Unable to open stock file" << endl;
    }
+   string coinLine;
    // Save the coin file as array since fixed array size of eight.
    ifstream coinFile(coinsDat);
    if (coinFile.is_open()) {
         int count = 0;
-        while (getline(coinFile, line)) {
+        while (getline(coinFile, coinLine)) {
                 std::vector<std::string> coinToken;
                 string delimiter = ",";
-                Helper::splitString(line,coinToken,delimiter);
+                Helper::splitString(coinLine,coinToken,delimiter);
                 // Check if the coins file is a correct input.
                 vendingMachine.purse[count].count = std::stoi(coinToken[1]);
                 vendingMachine.purse[count].denom = Denomination(7 - count);
