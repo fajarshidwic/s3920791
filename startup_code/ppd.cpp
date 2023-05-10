@@ -45,7 +45,7 @@ void resetStock(LinkedList& list);
 void removeItem(LinkedList& list);
 
 // About coins
-void displayCoin();
+void displayCoin(LinkedList& list);
 
 // delete this function in the final code
 // a sample of how to use Linked List
@@ -87,7 +87,6 @@ int main(int argc, char **argv)
                     useLinkedList();
                 }
                 else if (std::stoi(choice) == 1) {
-                    // This case shows the items on the system.
                     vendingMachine.sort();
                     vendingMachine.printItems();
                     cout << endl;
@@ -100,20 +99,19 @@ int main(int argc, char **argv)
                   //       \/
                     saveItem(outFileName, vendingMachine);
                     std::cout << "Save and Exit" << std::endl;
-                    saveItem(outFileName, vendingMachine);
                 } else if (std::stoi(choice) == 4) {
+                    
                     std::cout << "Add Item" << std::endl;
                     addItem(vendingMachine);
                     std::cin.clear();
                 } else if (std::stoi(choice) == 5) {
-                    // This case delete an item using itemID.
+                    // This case removes item from system.
                     removeItem(vendingMachine);
                 } else if (std::stoi(choice) == 6) {
-                    // TODO: This case shows all coins in the system.
-                    displayCoin();
+                    // This case shows coins in system.
+                    displayCoin(vendingMachine);
                 } else if (std::stoi(choice) == 7) {
                     std::cout << "Reset Stock" << std::endl;
-                    resetStock(vendingMachine);
                 } else if (std::stoi(choice) == 8) {
                     std::cout << "Reset Coins" << std::endl;
                 } else if (std::stoi(choice) == 9) {
@@ -141,10 +139,6 @@ int main(int argc, char **argv)
 void loadItem(char **argv, LinkedList& vendingMachine){
    // Reading the data inserted.
    bool allowedArgs = true;
-   // Holds the coin values.
-   int coinDenomination = 8;
-   int* coinPurse = new int[coinDenomination];
-   int* coinValues = new int[coinDenomination];
    string coinsDat = argv[1];
    string stockDat = argv[2];
    // Reading files
@@ -182,15 +176,19 @@ void loadItem(char **argv, LinkedList& vendingMachine){
    // Save the coin file as array since fixed array size of eight.
    ifstream coinFile(coinsDat);
    if (coinFile.is_open()) {
-      int count = 0;
-      while (getline(coinFile, line)) {
-            std::vector<std::string> coinToken;
-            string delimiter = ",";
-            Helper::splitString(line,coinToken,delimiter);
-            coinValues[count] = std::stoi(coinToken[0]);
-            coinPurse[count] = std::stoi(coinToken[1]);
-      }
-      coinFile.close();
+        int count = 0;
+        while (getline(coinFile, line)) {
+                std::vector<std::string> coinToken;
+                string delimiter = ",";
+                Helper::splitString(line,coinToken,delimiter);
+                // Check if the coins file is a correct input.
+                vendingMachine.purse[count].count = std::stoi(coinToken[1]);
+                vendingMachine.purse[count].denom = Denomination(7 - count);
+                count += 1;
+        }
+        coinFile.close();
+        //Sort the coin array.
+        vendingMachine.purse->sortCoins(vendingMachine.purse);
    }
    else {
       allowedArgs = false;
@@ -198,7 +196,7 @@ void loadItem(char **argv, LinkedList& vendingMachine){
    }
 
    if (allowedArgs) {
-        std::cout << "\nStocks added!" << std::endl;
+        std::cout << "\nStocks & Coins added!" << std::endl;
     }
 }
 
@@ -206,6 +204,7 @@ void saveItem(std::string outFileName, LinkedList vendingMachine) {
    std::ofstream outfile(outFileName);
    vendingMachine.printItems(outfile);
 }
+
 
 void purchaseItem(LinkedList* LinkedList) {
 
@@ -438,13 +437,21 @@ void resetStock(LinkedList& list){
 }
 
 // TODO: Has to have a way to read coins kept.
-void displayCoin() {
+// Condition: the coins arrive presorted.
+void displayCoin(LinkedList& list) {
     cout << "Coins Summary" << endl;
     cout << Helper::printBorder(13);
     cout << "Denomination    |    Count" << endl;
     // Denom side == 16, count side == 10, Total = 27.
     cout << Helper::printBorder(27);
-    cout << Helper::writeOnSize(16, "5 Cents", true) << "|" << Helper::writeOnSize(10, "20", false) << endl;
+    int purseLen = sizeof(list.purse);
+    for (int i=0; i < purseLen; i++) {
+        cout << Helper::writeOnSize(16, list.purse[i].getName(), true);
+        cout << "|";
+        cout << Helper::writeOnSize(10, std::to_string(list.purse[i].count), false) << endl;
+    }
+    // Spacing reasons
+    cout << endl;
 }
 
 

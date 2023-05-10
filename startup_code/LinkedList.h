@@ -9,6 +9,9 @@ public:
     LinkedList();
     ~LinkedList();
 
+    // Beginning of coins list
+    Coin* purse;
+
     // more functions to be added perhaps...
     Node* getHead();
 
