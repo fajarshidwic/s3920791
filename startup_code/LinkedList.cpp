@@ -185,29 +185,36 @@ void LinkedList::printItems() {
     
 }
 
+void LinkedList::printCoins(std::ostream& outfile) {
+    /*
+    1000,3
+    */
+    for (int i=0; i<8; i++) {
+        outfile << purse->denomination_to_string(purse[i].denom)
+            << "," << purse[i].count
+            << endl;
+    }
+    
+}
+
 void LinkedList::printItems(std::ostream& outfile) {
     sort();
     Node* current = head;
-    outfile << "Items Menu" << endl;
-    outfile << "----------" << endl;
-    outfile << "ID   |Name                                    | Available | Price" << endl;
-    outfile << "-----------------------------------------------------------------" << endl;
+    /*
+    I0001|Meat Pie|Yummy Beef in Gravy surrounded by pastry|3.50|50
+    I0002|Apple Pie                               |20         |$ 3.00
+    */
     for (unsigned i=0; i<count; ++i) {
         outfile << std::left << std::setw(5) << current->data->id
-            << "|" << std::setw(40) << current->data->name
-            << "|" << std::setw(11) << current->data->on_hand
-            << "|$";
-        if (current->data->price.dollars < 10) {
-            outfile << " ";
-        }
-        outfile << current->data->price.dollars << '.' << std::setw(2) << std::setfill('0') << current->data->price.cents
-            << std::setfill(' ')
+            << "|" << current->data->name
+            << "|" << current->data->description
+            << "|" << current->data->price.dollars << '.' << std::setw(2) << std::setfill('0') << current->data->price.cents
+            << "|" << current->data->on_hand
             << endl;
         current = current->next;
     }
     
 }
-
 
 // Helper Functions
 

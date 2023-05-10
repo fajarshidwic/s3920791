@@ -33,6 +33,7 @@ void printMainMenu() {
 void loadItem(char **argv, LinkedList& vendingMachine);
 
 void saveItem(std::string outFileName, LinkedList& vendingMachine);
+void saveCoin(std::string outFileName, LinkedList& vendingMachine);
 
 // This is the purchase item function.
 void purchaseItem(LinkedList* LinkedList);
@@ -57,13 +58,16 @@ int main(int argc, char **argv)
     /* validate command line arguments */
     bool allowedArgs = true;
     //  save vending machine items in an output file
-    std::string outFileName = "output.txt";
+    std::string outFileName;
+    std::string coinFile;
     if (argc != 3) {
         cout << "You may have not entered the right arguments." << endl;
         allowedArgs = false;
     }
     // Adding requried documents.
     else {
+        outFileName = argv[1];
+        coinFile = argv[2];
         loadItem(argv, vendingMachine);
     }
 
@@ -92,10 +96,10 @@ int main(int argc, char **argv)
                 } else if (std::stoi(choice) == 3) {
                     exit = true;
                     saveItem(outFileName, vendingMachine);
+                    saveCoin(coinFile, vendingMachine);
                     std::cout << "Save and Exit" << std::endl;
                 } else if (std::stoi(choice) == 4) {
-                    
-                    std::cout << "Add Item" << std::endl;
+                    // This case adds items to the System.
                     addItem(vendingMachine);
                     std::cin.clear();
                 } else if (std::stoi(choice) == 5) {
@@ -173,8 +177,9 @@ void loadItem(char **argv, LinkedList& vendingMachine){
                 Helper::splitString(coinLine,coinToken,delimiter);
                 // Check if the coins file is a correct input.
                 vendingMachine.purse[count].count = std::stoi(coinToken[1]);
-                // TODO: make this actually read the results
-                vendingMachine.purse[count].denom = Denomination(7 - count);
+
+                // TODO: Unable to handle non valid files.
+                vendingMachine.purse[count].denom = vendingMachine.purse->string_to_denomination(coinToken[0]);
                 count += 1;
         }
         coinFile.close();
@@ -194,8 +199,14 @@ void loadItem(char **argv, LinkedList& vendingMachine){
 void saveItem(std::string outFileName, LinkedList& vendingMachine) {
    std::ofstream outfile(outFileName);
    vendingMachine.printItems(outfile);
+   outfile.close();
 }
 
+void saveCoin(std::string outFileName, LinkedList& vendingMachine) {
+   std::ofstream outfile(outFileName);
+   vendingMachine.printCoins(outfile);
+   outfile.close();
+}
 
 void purchaseItem(LinkedList* LinkedList) {
 

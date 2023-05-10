@@ -33,6 +33,13 @@ public:
      * @brief sorts the array from low to high.
     */
     void sortCoins(Coin*);
+    
+    /**
+     * @brief changes denom into the number value like input file.
+    */
+    std::string denomination_to_string(Denomination denom);
+
+    Denomination string_to_denomination(std::string& str);
 };
 
 #endif // COIN_H
