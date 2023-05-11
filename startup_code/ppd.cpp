@@ -46,6 +46,7 @@ void removeItem(LinkedList& list);
 
 // About coins
 void displayCoin(LinkedList& list);
+void resetCoin(LinkedList& list);
 
 // delete this function in the final code
 // a sample of how to use Linked List
@@ -111,7 +112,8 @@ int main(int argc, char **argv)
                 } else if (std::stoi(choice) == 7) {
                     resetStock(vendingMachine);
                 } else if (std::stoi(choice) == 8) {
-                    std::cout << "Reset Coins" << std::endl;
+                    std::cout << "\"All coins have been reset to the default level of " << DEFAULT_COIN_COUNT << "\"" << std::endl;
+                    resetCoin(vendingMachine);
                 } else if (std::stoi(choice) == 9) {
                     exit = true;
                     std::cout << "Abort Program" << std::endl;
@@ -343,67 +345,92 @@ void printChange(int change) {
 }
 
 void addItem(LinkedList& list) {
-    bool quit = false;
     bool cancel = false;
     std::string maxID = Helper::maxId(list.getHead());
     std::string newID = Helper::incrementID(maxID);
-    // int stepto = 0;
+    // use stepto to track the process
+    // 0: name, 1: description, 2: price
+    int stepto = 0;
+    double price = 0;
     std::string name, description, price_s;
     std::cout << "The id of the new stock will be: " << newID << std::endl;
-    while (!quit && !cancel) {
-        std::cout << "Enter the item name: ";
-        std::getline(std::cin, name);
-        if (name == "" || std::cin.eof()) {
-            cancel = true;
-        } else {
-            quit = true;
-        }
-    }
-    quit = false;
-    while (!quit && !cancel) {
-        std::cout << "Enter the item description: ";
-        std::getline(std::cin, description);
-        if (description =="" || std::cin.eof()) {
-            cancel = true;
-        } else {
-            quit = true;
-        }
-    }
-    quit = false;
-    double price = 0;
-    while (!quit && !cancel) {
-        std::cout << "Enter the price for the item: ";
-        std::getline(std::cin, price_s);
-        if (price_s == "" || std::cin.eof()) {
-            cancel = true;
-        } else {
-            std::vector<std::string> tokens;
-            price_s = Helper::strip(price_s);
-            if (price_s[0] == '.') {
-                price_s.insert(0, "0");
-            } else if (price_s[price_s.length()-1] == '.') {
-                price_s.append("0");
-            }
-            
-            Helper::splitString(price_s, tokens, ".");
-            if (tokens.size() == 2) {
-                if (tokens[1].length() == 1) {
-                    tokens[1] += "0";
-                }
-                if (!Helper::isInt(tokens[0]) || !Helper::isInt(tokens[1])){
-                    std::cout << "Error: the price is not valid." << std::endl;
-                } else if (std::stoi(tokens[0]) > 99 || std::stoi(tokens[0]) < 0) {
-                    std::cout << "Error: the dollars are out of range." << std::endl;
-                } else if (std::stoi(tokens[1]) > 99 || std::stoi(tokens[1]) < 0) {
-                    std::cout << "Error: the cents are out of range." << std::endl;
-                } else if (std::stoi(tokens[1])%5) {
-                    std::cout << "Error: the cents need to be a multiple of 5." << std::endl;
-                } else {
-                    price = std::stod(price_s);
-                    quit = true;
-                }
+    
+    while (stepto < 3 && !cancel) {
+        if (stepto == 0) {
+            // Step 0: ask the user to enter the name.
+            std::cout << "Enter the item name: ";
+            std::getline(std::cin, name);
+            name = Helper::strip(name);
+            if (name == "" || std::cin.eof()) {
+                cancel = true;
             } else {
-                std::cout << "Error: the price is not valid." << std::endl;
+                if (name.length() > NAMELEN){
+                    std::cout << "Error: line entered was too long. Please try again.\n"
+                                << "Error inputting name of the product. Please try again." 
+                                << std::endl;
+                } else {
+                    stepto++;
+                }
+            }
+        } else if (stepto == 1) {
+            // Step 1: ask the user to enter the description.
+            std::cout << "Enter the item description: ";
+            std::getline(std::cin, description);
+            description = Helper::strip(description);
+            if (description =="" || std::cin.eof()) {
+                cancel = true;
+            } else {
+                if (description.length() > DESCLEN) {
+                    std::cout << "Error: line entered was too long. Please try again.\n"
+                                << "Error inputting the description of the product. Please try again." 
+                                << std::endl;
+                }else {
+                    stepto++;
+                }
+            }
+        } else if (stepto == 2) {
+            // Step 2: ask the user to enter the price.
+            std::cout << "Enter the price for the item: ";
+            std::getline(std::cin, price_s);
+            if (price_s == "" || std::cin.eof()) {
+                cancel = true;
+            } else {
+                std::vector<std::string> tokens;
+                price_s = Helper::strip(price_s);
+                int dotNum = 0;
+                for (int i = 0; i < price_s.length(); ++i) {
+                    if (price_s[i] == '.') {
+                        dotNum ++;
+                    }
+                }
+                if (dotNum == 0) {
+                    price_s.append(".");
+                }
+                if (price_s[0] == '.') {
+                    price_s.insert(0, "0");
+                } else if (price_s[price_s.length()-1] == '.') {
+                    price_s.append("0");
+                }
+                Helper::splitString(price_s, tokens, ".");
+                if (tokens.size() == 2) {
+                    if (tokens[1].length() == 1) {
+                        tokens[1].append("0");
+                    }
+                    if (!Helper::isInt(tokens[0]) || !Helper::isInt(tokens[1])){
+                        std::cout << "Error: the price is not valid." << std::endl;
+                    } else if (std::stoi(tokens[0]) > 99 || std::stoi(tokens[0]) < 0) {
+                        std::cout << "Error: the dollars are out of range." << std::endl;
+                    } else if (std::stoi(tokens[1]) > 99 || std::stoi(tokens[1]) < 0) {
+                        std::cout << "Error: the cents are out of range." << std::endl;
+                    } else if (std::stoi(tokens[1])%5) {
+                        std::cout << "Error: the cents need to be a multiple of 5." << std::endl;
+                    } else {
+                        price = std::stod(price_s);
+                        stepto ++ ;
+                    }
+                } else {
+                    std::cout << "Error: the price is not valid." << std::endl;
+                }
             }
         }
     }
@@ -418,26 +445,38 @@ void addItem(LinkedList& list) {
         list.addBack(new Stock(newID, name, description, price));
         std::cout << "This item \"" << name << " - " << description << "\" has now been added to the menu." << std::endl;
     }
-    
 }
+
 
 // TODO: ensure that the memory used to store this is removed.
 void removeItem(LinkedList& list) {
-    cout << "Enter the item id of the item to remove from the menu: ";
+    bool quit = false;
+    bool cancel = false;
     std::string item;
-    std::getline(std::cin, item);
-    Stock* itemInfo = list.get(item);
-    if (itemInfo != nullptr) {
-        cout << "\"";
-        cout << itemInfo->id;
-        cout << " - ";
-        cout << itemInfo->name;
-        cout << " - ";
-        cout << itemInfo->description;
-        cout << "\" has been removed from the system." << endl;
-        list.remove(item);
-    } else {
-        cout << "That item does not exist in system." << endl;
+    while (!quit && !cancel) {
+        cout << "Enter the item id of the item to remove from the menu: ";
+        std::getline(std::cin, item);
+        if (item == "" || std::cin.eof()) {
+            cancel = true;
+        } else {
+            quit = true;
+        }
+    }
+    // Exit if bad input
+    if (!quit && !cancel) {
+        Stock* itemInfo = list.get(item);
+        if (itemInfo != nullptr) {
+            cout << "\"";
+            cout << itemInfo->id;
+            cout << " - ";
+            cout << itemInfo->name;
+            cout << " - ";
+            cout << itemInfo->description;
+            cout << "\" has been removed from the system." << endl;
+            list.remove(item);
+        } else {
+            cout << "That item does not exist in system." << endl;
+        }
     }
 }
 
@@ -514,4 +553,10 @@ void useLinkedList() {
         std::cout << "Item not found" << std::endl;
     }
     list.printItems();
+}
+
+void resetCoin(LinkedList& vendingMachine) {
+    for (int i = 0; i < 8; i++) {
+        vendingMachine.purse[i].count = DEFAULT_COIN_COUNT;
+    }
 }
