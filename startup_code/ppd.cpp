@@ -37,7 +37,7 @@ void saveCoin(std::string outFileName, LinkedList& vendingMachine);
 
 // This is the purchase item function.
 void purchaseItem(LinkedList* LinkedList);
-void printChange(int change);
+void printChange(int change, LinkedList* VendingMachine);
 
 // This is to handle stock.
 void addItem(LinkedList& list);
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     //  save vending machine items in an output file
     std::string outFileName;
     std::string coinFile;
-    if (argc != 3) {
+    if (argc != 3 || string(argv[1]) != "stock.dat" || string(argv[2]) != "coins.dat") {
         cout << "You may have not entered the right arguments." << endl;
         allowedArgs = false;
     }
@@ -220,13 +220,12 @@ void purchaseItem(LinkedList* LinkedList) {
     std::string itemId;
     std::getline(std::cin, itemId);
     Helper::strip(itemId);
-    cout << (*LinkedList).get(itemId) << endl;
     if ((!cin.eof()) || (*LinkedList).get(itemId) != nullptr) {
         cout << itemId << endl;
 
-        Stock* item = (*LinkedList).get(itemId);
+        Stock* item = (*LinkedList).get(itemId); //clear
 
-        if ((item != nullptr) & (item->on_hand > 0)) {
+        if (item->on_hand > 0) {
 
             // Printing the item
             cout << "You have selected \"";
@@ -287,7 +286,7 @@ void purchaseItem(LinkedList* LinkedList) {
                         paidFor = true;
                         int change = abs(remainingCost);
                         cout << "Here is your " << item->name << " and your change of $" << change / 100 << "." << change % 100 << ": ";
-                        printChange(change);
+                        printChange(change, LinkedList);
                         cout << endl;
 
                         // removing stock
@@ -314,7 +313,7 @@ void purchaseItem(LinkedList* LinkedList) {
     }
 }
 
-void printChange(int change) {
+void printChange(int change, LinkedList* VendingMachine) {
     int coinDenom[8] = {1000, 500, 200, 100, 50, 20, 10, 5};
     int i = 0;
     while (change != 0) {
