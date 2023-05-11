@@ -106,6 +106,7 @@ int main(int argc, char **argv)
                 } else if (std::stoi(choice) == 5) {
                     // This case removes item from system.
                     removeItem(vendingMachine);
+                    cin.clear();
                 } else if (std::stoi(choice) == 6) {
                     // This case shows coins in system.
                     displayCoin(vendingMachine);
@@ -465,6 +466,14 @@ void removeItem(LinkedList& list) {
             cout << "That item does not exist in system." << endl;
         }
     }
+    quit = false;
+    if (cancel) {
+        std::cout << "Cancelling \"Remove Item\" at user's request.\n"
+                << "The task Remove Item failed to run successfully."
+                << std::endl;
+        clearerr(stdin);
+    }
+    return;
 }
 
 void resetStock(LinkedList& list){
@@ -473,6 +482,7 @@ void resetStock(LinkedList& list){
         upto->data->on_hand = DEFAULT_STOCK_LEVEL;
         upto = upto->next;
     }
+    std::cout << "All stock has been reset to the default level of 20" << std::endl;
 }
 
 // Condition: the coins arrive presorted.
@@ -492,7 +502,11 @@ void displayCoin(LinkedList& list) {
     cout << endl;
 }
 
-
+void resetCoin(LinkedList& vendingMachine) {
+    for (int i = 0; i < 8; i++) {
+        vendingMachine.purse[i].count = DEFAULT_COIN_COUNT;
+    }
+}
 
 // delete this function in the final code
 void useLinkedList() {
@@ -540,10 +554,4 @@ void useLinkedList() {
         std::cout << "Item not found" << std::endl;
     }
     list.printItems();
-}
-
-void resetCoin(LinkedList& vendingMachine) {
-    for (int i = 0; i < 8; i++) {
-        vendingMachine.purse[i].count = DEFAULT_COIN_COUNT;
-    }
 }
