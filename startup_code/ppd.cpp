@@ -31,7 +31,6 @@ void printMainMenu() {
             << "Select your option (1-9):";
 }
 void loadItem(char **argv, LinkedList& vendingMachine);
-void loadcoin(std::string s, LinkedList& vendingMachine);
 
 void saveItem(std::string outFileName, LinkedList& vendingMachine);
 void saveCoin(std::string outFileName, LinkedList& vendingMachine);
@@ -47,6 +46,7 @@ void removeItem(LinkedList& list);
 
 // About coins
 void displayCoin(LinkedList& list);
+void resetCoin(LinkedList& list);
 
 // delete this function in the final code
 // a sample of how to use Linked List
@@ -111,8 +111,8 @@ int main(int argc, char **argv)
                 } else if (std::stoi(choice) == 7) {
                     resetStock(vendingMachine);
                 } else if (std::stoi(choice) == 8) {
-                    std::cout << "Reset Coins" << std::endl;
-                    loadcoin(coinFile, vendingMachine);
+                    std::cout << "\"All coins have been reset to the default level of " << DEFAULT_COIN_COUNT << "\"" << std::endl;
+                    resetCoin(vendingMachine);
                 } else if (std::stoi(choice) == 9) {
                     exit = true;
                     std::cout << "Abort Program" << std::endl;
@@ -523,28 +523,8 @@ void useLinkedList() {
     list.printItems();
 }
 
-void loadcoin(std::string s, LinkedList& vendingMachine) {
-    string coinLine;
-    // Save the coin file as array since fixed array size of eight.
-    ifstream coinFile(s);
-    if (coinFile.is_open()) {
-        int count = 0;
-        while (getline(coinFile, coinLine)) {
-                std::vector<std::string> coinToken;
-                string delimiter = ",";
-                Helper::splitString(coinLine,coinToken,delimiter);
-                // Check if the coins file is a correct input.
-                vendingMachine.purse[count].count = std::stoi(coinToken[1]);
-
-                // TODO: Unable to handle non valid files.
-                vendingMachine.purse[count].denom = vendingMachine.purse->string_to_denomination(coinToken[0]);
-                count += 1;
-        }
-        coinFile.close();
-        //Sort the coin array.
-        vendingMachine.purse->sortCoins(vendingMachine.purse);
-    }
-    else {
-        cout << "Unable to open coin file" << endl;
+void resetCoin(LinkedList& vendingMachine) {
+    for (int i = 0; i < 8; i++) {
+        vendingMachine.purse[i].count = DEFAULT_COIN_COUNT;
     }
 }
