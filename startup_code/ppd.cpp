@@ -416,21 +416,33 @@ void addItem(LinkedList& list) {
 
 // TODO: ensure that the memory used to store this is removed.
 void removeItem(LinkedList& list) {
-    cout << "Enter the item id of the item to remove from the menu: ";
+    bool quit = false;
+    bool cancel = false;
     std::string item;
-    std::getline(std::cin, item);
-    Stock* itemInfo = list.get(item);
-    if (itemInfo != nullptr) {
-        cout << "\"";
-        cout << itemInfo->id;
-        cout << " - ";
-        cout << itemInfo->name;
-        cout << " - ";
-        cout << itemInfo->description;
-        cout << "\" has been removed from the system." << endl;
-        list.remove(item);
-    } else {
-        cout << "That item does not exist in system." << endl;
+    while (!quit && !cancel) {
+        cout << "Enter the item id of the item to remove from the menu: ";
+        std::getline(std::cin, item);
+        if (item == "" || std::cin.eof()) {
+            cancel = true;
+        } else {
+            quit = true;
+        }
+    }
+    // Exit if bad input
+    if (!quit && !cancel) {
+        Stock* itemInfo = list.get(item);
+        if (itemInfo != nullptr) {
+            cout << "\"";
+            cout << itemInfo->id;
+            cout << " - ";
+            cout << itemInfo->name;
+            cout << " - ";
+            cout << itemInfo->description;
+            cout << "\" has been removed from the system." << endl;
+            list.remove(item);
+        } else {
+            cout << "That item does not exist in system." << endl;
+        }
     }
 }
 
