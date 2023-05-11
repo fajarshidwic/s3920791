@@ -405,7 +405,7 @@ void addItem(LinkedList& list) {
                 << "The task Add Item failed to run successfully."
                 << std::endl;
         clearerr(stdin);
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return;
     } else {
         list.addBack(new Stock(newID, name, description, price));
