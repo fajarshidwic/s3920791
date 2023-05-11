@@ -486,6 +486,7 @@ void resetStock(LinkedList& list){
         upto->data->on_hand = DEFAULT_STOCK_LEVEL;
         upto = upto->next;
     }
+    std::cout << "All stock has been reset to the default level of 20" << std::endl;
 }
 
 // Condition: the coins arrive presorted.
