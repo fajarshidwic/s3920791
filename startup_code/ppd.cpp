@@ -91,6 +91,7 @@ int main(int argc, char **argv)
                     vendingMachine.printItems();
                     cout << endl;
                 } else if (std::stoi(choice) == 2) {
+                    std::cout << "Purchase Items" << std::endl;
                     purchaseItem(&vendingMachine);
                 } else if (std::stoi(choice) == 3) {
                     exit = true;
@@ -123,8 +124,6 @@ int main(int argc, char **argv)
                 // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             }
         }
-        // Convenience sake.
-        cout << endl;
     }
     
     return EXIT_SUCCESS;
@@ -242,6 +241,7 @@ void purchaseItem(LinkedList* LinkedList) {
         
         bool paidFor = false;
         int remainingCost = (dollar * 100) + cent;
+        vector<int> coinsToAdd;
         string moneyIn;
 
         // Loop until the item has been paidFor or the user has terminated the loop
@@ -253,15 +253,13 @@ void purchaseItem(LinkedList* LinkedList) {
             moneyIn = Helper::readInput();
             Helper::strip(moneyIn);
 
-            vector<int> coinsToAdd;
-            int coinValues[8] = {5, 10, 20, 50, 100, 200, 500, 1000};
-            int arrLen = sizeof(coinValues) / sizeof(int);
+            int coinDenoms[8] = {5, 10, 20, 50, 100, 200, 500, 1000};
+            int denomSize = sizeof(coinDenoms) / sizeof(coinDenoms[0]);
             bool validDenomination = false;
 
-            for (int idx = 0; idx < arrLen; idx++) {
-                if (stoi(moneyIn) == coinValues[idx]) {
+            for (int idx = 0; idx < denomSize; idx++) {
+                if (stoi(moneyIn) == coinDenoms[idx]) {
                     validDenomination = true;
-                    LinkedList->purse[idx].count += 1;
                 }
             } 
 
@@ -286,11 +284,20 @@ void purchaseItem(LinkedList* LinkedList) {
                     printChange(change);
                     cout << endl;
                 
-                    // to add
                     // removing stock
                     item->on_hand -= 1;
 
                     // removing coins from purse
+                    int sizeAdd = coinsToAdd.size();
+                    for (int idx = 0; idx < sizeAdd; idx++) {
+                        int denomIdx = 0;
+                        for (int jdx = 0; jdx < 8; jdx++) {
+                            if (coinsToAdd[idx] == coinDenoms[jdx]) {
+                                denomIdx = jdx;
+                            }
+                        }
+                        LinkedList->purse[denomIdx].count++;
+                    }
                 }
             }
         }
@@ -405,7 +412,7 @@ void addItem(LinkedList& list) {
                 << "The task Add Item failed to run successfully."
                 << std::endl;
         clearerr(stdin);
-        // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return;
     } else {
         list.addBack(new Stock(newID, name, description, price));
