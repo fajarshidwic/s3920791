@@ -14,5 +14,5 @@ ppd: Coin.o Node.o LinkedList.o ppd.o helper.o
 run: ppd
 	./ppd stock.dat coins.dat
 
-tset: ppd
-	./ppd ./input/test1/stock.dat ./input/test1/coins.dat < ./input/test1/input.txt > ./output/test1/output.txt
+test: ppd
+	./ppd ./input/test1_copy_4/stock.dat ./input/test1_copy_4/coins.dat < ./input/test1_copy_4/input.txt > ./output/test/output.txt
