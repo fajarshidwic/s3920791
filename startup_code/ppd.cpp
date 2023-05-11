@@ -86,12 +86,13 @@ int main(int argc, char **argv)
                 }
             }
             if (isInt && choice != "") {
+                // Apperances
+                cout << endl;
                 if (std::stoi(choice) == 1) {
                     vendingMachine.sort();
                     vendingMachine.printItems();
                     cout << endl;
                 } else if (std::stoi(choice) == 2) {
-                    std::cout << "Purchase Items" << std::endl;
                     purchaseItem(&vendingMachine);
                 } else if (std::stoi(choice) == 3) {
                     exit = true;
@@ -124,6 +125,8 @@ int main(int argc, char **argv)
                 // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             }
         }
+        // Convenience sake.
+        cout << endl;
     }
     
     return EXIT_SUCCESS;
@@ -260,6 +263,7 @@ void purchaseItem(LinkedList* LinkedList) {
             for (int idx = 0; idx < arrLen; idx++) {
                 if (stoi(moneyIn) == coinValues[idx]) {
                     validDenomination = true;
+                    LinkedList->purse[idx].count += 1;
                 }
             } 
 

@@ -89,7 +89,8 @@ Denomination Coin::string_to_denomination(std::string& str) {
     } else if (str == "1000") {
         value = TEN_DOLLARS;
     } else {
-        value = static_cast<Denomination>(-1); // handle error
+         // handle error
+        value = ERROR;
     }
     return value;
 }

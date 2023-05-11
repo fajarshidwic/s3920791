@@ -9,7 +9,7 @@
 enum Denomination
 {
     FIVE_CENTS, TEN_CENTS, TWENTY_CENTS, FIFTY_CENTS, ONE_DOLLAR, 
-    TWO_DOLLARS, FIVE_DOLLARS, TEN_DOLLARS
+    TWO_DOLLARS, FIVE_DOLLARS, TEN_DOLLARS, ERROR
 };
 
 
@@ -39,6 +39,9 @@ public:
     */
     std::string denomination_to_string(Denomination denom);
 
+    /**
+     * @brief Reads string and changes it to demon equvialent.
+    */
     Denomination string_to_denomination(std::string& str);
 };
 
