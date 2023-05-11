@@ -86,8 +86,6 @@ int main(int argc, char **argv)
                 }
             }
             if (isInt && choice != "") {
-                // Apperances
-                cout << endl;
                 if (std::stoi(choice) == 1) {
                     vendingMachine.sort();
                     vendingMachine.printItems();
