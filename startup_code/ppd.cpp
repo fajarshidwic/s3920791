@@ -219,129 +219,116 @@ void purchaseItem(LinkedList* LinkedList) {
     std::string itemId;
     std::getline(std::cin, itemId);
     Helper::strip(itemId);
+    cout << (*LinkedList).get(itemId) << endl;
+    if ((!cin.eof()) || (*LinkedList).get(itemId) != nullptr) {
+        cout << itemId << endl;
 
-    Stock* item = (*LinkedList).get(itemId);
+        Stock* item = (*LinkedList).get(itemId);
 
-    if ((item != nullptr) & (item->on_hand > 0)) {
+        if ((item != nullptr) & (item->on_hand > 0)) {
 
-        // Printing the item
-        cout << "You have selected \"";
-        cout << item->name;
-        cout << " - ";
-        cout << item->description;
-        cout << "\". This will cost you $ ";
+            // Printing the item
+            cout << "You have selected \"";
+            cout << item->name;
+            cout << " - ";
+            cout << item->description;
+            cout << "\". This will cost you $ ";
 
-        // Set local variables.
-        // Price cost = item->price;
-        int dollar = item->price.dollars;
-        int cent = item->price.cents;
-        string money = std::to_string(dollar) + "." + std::to_string(cent);
-        cout << money << "." << endl;
+            // Set local variables.
+            // Price cost = item->price;
+            int dollar = item->price.dollars;
+            int cent = item->price.cents;
+            string money = std::to_string(dollar) + "." + std::to_string(cent);
+            cout << money << "." << endl;
 
-        // Continuation
-        cout << "Please hand over the money - type in the value of each note/coin in cents.\nPress enter or ctrl-d on a new line to cancel this purchase:\n";
-        
-        bool paidFor = false;
-        int remainingCost = (dollar * 100) + cent;
-        vector<int> coinsToAdd;
-        string moneyIn;
+            // Continuation
+            cout << "Please hand over the money - type in the value of each note/coin in cents.\nPress enter or ctrl-d on a new line to cancel this purchase:\n";
 
-        // Loop until the item has been paidFor or the user has terminated the loop
-        while (paidFor == false) {
-            dollar = remainingCost / 100;
-            cent = remainingCost % 100;
+            bool paidFor = false;
+            int remainingCost = (dollar * 100) + cent;
+            vector<int> coinsToAdd;
+            string moneyIn;
 
-            cout << "Remaining Cost: $" << dollar << "." << cent << ": ";
-            moneyIn = Helper::readInput();
-            Helper::strip(moneyIn);
+            // Loop until the item has been paidFor or the user has terminated the loop
+            while (paidFor == false) {
+                dollar = remainingCost / 100;
+                cent = remainingCost % 100;
 
-            int coinDenoms[8] = {5, 10, 20, 50, 100, 200, 500, 1000};
-            int denomSize = sizeof(coinDenoms) / sizeof(coinDenoms[0]);
-            bool validDenomination = false;
+                cout << "Remaining Cost: $" << dollar << "." << cent << ": ";
+                moneyIn = Helper::readInput();
+                Helper::strip(moneyIn);
 
-            for (int idx = 0; idx < denomSize; idx++) {
-                if (stoi(moneyIn) == coinDenoms[idx]) {
-                    validDenomination = true;
-                }
-            } 
+                int coinDenoms[8] = {5, 10, 20, 50, 100, 200, 500, 1000};
+                int denomSize = sizeof(coinDenoms) / sizeof(coinDenoms[0]);
+                bool validDenomination = false;
 
-            if ((cin.eof()) || (moneyIn == "")) {
-                // Base termination case
-                cout << "Pressed ctrl-D or enter" << endl;
-                paidFor = true;
-            } else if (validDenomination == false) {
-                cout << "That is not a valid denomination" << endl;
-            } else {
-                // Valid Input
-                remainingCost -= stoi(moneyIn);
+                for (int idx = 0; idx < denomSize; idx++) {
+                    if (stoi(moneyIn) == coinDenoms[idx]) {
+                        validDenomination = true;
+                    }
+                } 
 
-                // Add input to sumVector
-                coinsToAdd.push_back(stoi(moneyIn));
-
-                if (remainingCost <= 0) {
-                    // User has paid for the item
+                if ((cin.eof()) || (moneyIn == "")) {
+                    // Base termination case
+                    cout << "Pressed ctrl-D or enter" << endl;
                     paidFor = true;
-                    int change = abs(remainingCost);
-                    cout << "Here is your " << item->name << " and your change of $" << change / 100 << "." << change % 100 << ": ";
-                    printChange(change);
-                    cout << endl;
-                
-                    // removing stock
-                    item->on_hand -= 1;
+                } else if (validDenomination == false) {
+                    cout << "That is not a valid denomination" << endl;
+                } else {
+                    // Valid Input
+                    remainingCost -= stoi(moneyIn);
 
-                    // removing coins from purse
-                    int sizeAdd = coinsToAdd.size();
-                    for (int idx = 0; idx < sizeAdd; idx++) {
-                        int denomIdx = 0;
-                        for (int jdx = 0; jdx < 8; jdx++) {
-                            if (coinsToAdd[idx] == coinDenoms[jdx]) {
-                                denomIdx = jdx;
+                    // Add input to sumVector
+                    coinsToAdd.push_back(stoi(moneyIn));
+
+                    if (remainingCost <= 0) {
+                        // User has paid for the item
+                        paidFor = true;
+                        int change = abs(remainingCost);
+                        cout << "Here is your " << item->name << " and your change of $" << change / 100 << "." << change % 100 << ": ";
+                        printChange(change);
+                        cout << endl;
+
+                        // removing stock
+                        item->on_hand -= 1;
+
+                        // removing coins from purse
+                        int sizeAdd = coinsToAdd.size();
+                        for (int idx = 0; idx < sizeAdd; idx++) {
+                            int denomIdx = 0;
+                            for (int jdx = 0; jdx < 8; jdx++) {
+                                if (coinsToAdd[idx] == coinDenoms[jdx]) {
+                                    denomIdx = jdx;
+                                }
                             }
+                            LinkedList->purse[denomIdx].count++;
                         }
-                        LinkedList->purse[denomIdx].count++;
                     }
                 }
             }
         }
-    }
-    else {
-        cout << "Item not in machine" << endl;
+        else {
+            cout << "Item not in machine" << endl;
+        }
     }
 }
 
 void printChange(int change) {
-    if (change / 1000 > 0) {
-        cout << "$10 ";
-        change %= 1000;
+    int coinDenom[8] = {1000, 500, 200, 100, 50, 20, 10, 5};
+    int i = 0;
+    while (change != 0) {
+        if (change / coinDenom[i] > 0) {
+            if (i < 4) {
+                cout << "$" << coinDenom[i] / 100 << " ";
+            } else {
+                cout << coinDenom[i] << "c ";
+            }
+            change %= coinDenom[i];
+        } else {
+            i++;
+        }
     }
-    if (change / 500 > 0) {
-        cout << "$5 ";
-        change %= 500;
-    } 
-    if (change / 200 > 0) {
-        cout << "$2 ";
-        change %= 200;
-    }
-    if (change / 100 > 0) {
-        cout << "$1 ";
-        change %= 100;
-    }
-    if (change / 50 > 0) {
-        cout << "50c ";
-        change %= 50;
-    }
-    if (change / 20 > 0) {
-        cout << "20c ";
-        change %= 20;
-    }
-    if (change / 10 > 0) {
-        cout << "10c ";
-        change %= 10;
-    }
-    if (change / 5 > 0) {
-        cout << "5c ";
-        change %= 5;
-    }
+    cout << endl;
 }
 
 void addItem(LinkedList& list) {
@@ -398,7 +385,7 @@ void addItem(LinkedList& list) {
                 std::vector<std::string> tokens;
                 price_s = Helper::strip(price_s);
                 int dotNum = 0;
-                for (int i = 0; i < price_s.length(); ++i) {
+                for (int i = 0; i < int(price_s.length()); ++i) {
                     if (price_s[i] == '.') {
                         dotNum ++;
                     }
