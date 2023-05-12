@@ -37,7 +37,7 @@ void saveCoin(std::string outFileName, LinkedList& vendingMachine);
 
 // This is the purchase item function.
 void purchaseItem(LinkedList* LinkedList);
-void printChange(int change, LinkedList* VendingMachine);
+bool printChange(int change, LinkedList* VendingMachine);
 
 // This is to handle stock.
 void addItem(LinkedList& list);
@@ -333,22 +333,28 @@ void purchaseItem(LinkedList* LinkedList) {
                                 int change = abs(remainingCost);
                                 
                                 cout << "Here is your " << item->name << " and your change of $" << change / 100 << "." << change % 100 << ": ";
-                                printChange(change, LinkedList);
-                                cout << "Please come again soon.\n";
+                                if (printChange(change, LinkedList)) {
+                                    // if failed to give change
+                                    cout << "Sorry, we don't have enough coins to give you change" << endl;
+                                    cout << "Try again with more exact coins" << endl;
+                                } else {
+                                    // if successfully gave change
+                                    cout << "Please come again soon.\n";
     
-                                // removing stock
-                                item->on_hand -= 1;
-    
-                                // removing coins from purse
-                                int sizeAdd = coinsToAdd.size();
-                                for (int idx = 0; idx < sizeAdd; idx++) {
-                                    int denomIdx = 0;
-                                    for (int jdx = 0; jdx < 8; jdx++) {
-                                        if (coinsToAdd[idx] == coinDenoms[jdx]) {
-                                            denomIdx = jdx;
+                                    // removing stock
+                                    item->on_hand -= 1;
+
+                                    // removing coins from purse
+                                    int sizeAdd = coinsToAdd.size();
+                                    for (int idx = 0; idx < sizeAdd; idx++) {
+                                        int denomIdx = 0;
+                                        for (int jdx = 0; jdx < 8; jdx++) {
+                                            if (coinsToAdd[idx] == coinDenoms[jdx]) {
+                                                denomIdx = jdx;
+                                            }
                                         }
+                                        LinkedList->purse[denomIdx].count++;
                                     }
-                                    LinkedList->purse[denomIdx].count++;
                                 }
                             }
                         }
@@ -367,27 +373,30 @@ void purchaseItem(LinkedList* LinkedList) {
     }
 }
 
-void printChange(int change, LinkedList* VendingMachine) {
+bool printChange(int change, LinkedList* VendingMachine) {
     // Declare variables
     vector<int> coinDenom = {1000, 500, 200, 100, 50, 20, 10, 5};
     vector<int> addBack;
     bool refund = false;
-    bool cancel = false;
 
     // Loop until change given
     int i = 0;
     while (change != 0) {
-
+        bool cancel = false;
         if (change / coinDenom[i] <= 0) {
+            //cout << "less than 0" << endl;
             cancel = true;
         }
 
+        // no coins for that denomination
         if (VendingMachine->purse[i].count == 0) {
+            //cout << "no coins" << endl;
             cancel = true;
         }
 
         // in case while loop becomes stuck
-        if (i > 7 && change > 0) {
+        if (i >= 7 && change > 0) {
+            //cout << "stuck" << endl;
             change = 0; // stops the loop
             cancel = true;
             refund = true;
@@ -398,10 +407,10 @@ void printChange(int change, LinkedList* VendingMachine) {
         } else {
             if (i < 4) {
                 cout << "$" << coinDenom[i] / 100 << " ";
-                addBack.push_back(coinDemon[i]);
+                addBack.push_back(coinDenom[i]);
             } else {
                 cout << coinDenom[i] << "c ";
-                addBack.push_back(coinDemon[i]);
+                addBack.push_back(coinDenom[i]);
             }
             change %= coinDenom[i];
             VendingMachine->purse[7-i].count--;
@@ -418,9 +427,10 @@ void printChange(int change, LinkedList* VendingMachine) {
                 VendingMachine->purse[denomIdx].count++;
             }
         }
-    }
 
+    }
     cout << endl;
+    return refund;
 }
 
 void addItem(LinkedList& list) {
