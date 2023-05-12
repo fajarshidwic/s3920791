@@ -243,16 +243,19 @@ void purchaseItem(LinkedList* LinkedList) {
     cout << "-------------" << endl;
     cout << "Please enter the id of the item you wish to purchase:";
 
+    // Get itemID
     std::string itemId;
     std::getline(std::cin, itemId);
     Helper::strip(itemId);
+
     if ((!cin.eof())) {
+        // Check if the itemID exists
         if ((*LinkedList).get(itemId) == 0) {
             cout << "Invalid Input" << endl;
             cout << endl;
         } else {
 
-            Stock* item = (*LinkedList).get(itemId); //clear
+            Stock* item = (*LinkedList).get(itemId);
 
             if (item->on_hand > 0) {
 
@@ -264,15 +267,15 @@ void purchaseItem(LinkedList* LinkedList) {
                 cout << "\". This will cost you $ ";
 
                 // Set local variables.
-                // Price cost = item->price;
                 int dollar = item->price.dollars;
                 int cent = item->price.cents;
                 string money = std::to_string(dollar) + "." + std::to_string(cent);
-                cout << money << "." << endl;
 
                 // Continuation
+                cout << money << "." << endl;
                 cout << "Please hand over the money - type in the value of each note/coin in cents.\nPress enter or ctrl-d on a new line to cancel this purchase:\n";
 
+                // Initialise more Variables
                 bool paidFor = false;
                 int remainingCost = (dollar * 100) + cent;
                 vector<int> coinsToAdd;
@@ -288,10 +291,12 @@ void purchaseItem(LinkedList* LinkedList) {
                     Helper::strip(moneyIn);
 
                     if (Helper::isInt(moneyIn)) {
+                        // Initialise and set variables
                         int coinDenoms[8] = {5, 10, 20, 50, 100, 200, 500, 1000};
                         int denomSize = sizeof(coinDenoms) / sizeof(coinDenoms[0]);
                         bool validDenomination = false;
     
+                        // Check if the input is a valid denomination
                         for (int idx = 0; idx < denomSize; idx++) {
                             if (stoi(moneyIn) == coinDenoms[idx]) {
                                 validDenomination = true;
@@ -299,10 +304,11 @@ void purchaseItem(LinkedList* LinkedList) {
                         } 
     
                         if ((cin.eof()) || (moneyIn == "")) {
-                            // Base termination case
+                            // User cancels purchase
                             cout << "Pressed ctrl-D or enter" << endl;
                             paidFor = true;
                         } else if (validDenomination == false) {
+                            // Invalid Denomination
                             cout << "That is not a valid denomination" << endl;
                         } else {
                             // Valid Input
@@ -310,11 +316,13 @@ void purchaseItem(LinkedList* LinkedList) {
     
                             // Add input to sumVector
                             coinsToAdd.push_back(stoi(moneyIn));
-    
+                            
+                            // Paid for item
                             if (remainingCost <= 0) {
                                 // User has paid for the item
                                 paidFor = true;
                                 int change = abs(remainingCost);
+                                
                                 cout << "Here is your " << item->name << " and your change of $" << change / 100 << "." << change % 100 << ": ";
                                 printChange(change, LinkedList);
                                 cout << endl;
@@ -336,7 +344,7 @@ void purchaseItem(LinkedList* LinkedList) {
                             }
                         }
                     } else {
-                        cout << "we fucked up" << endl;
+                        cout << "Enter a valid denomination" << endl;
                     }
                 }
             }
