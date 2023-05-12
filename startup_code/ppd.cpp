@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     std::string coinFile;
 
     // Input Validation
-    if (argc != 3 || string(argv[1]) != "stock.dat" || string(argv[2]) != "coins.dat") {
+    if (argc != 3) {
         cout << "You may have not entered the right arguments." << endl;
         allowedArgs = false;
     }
