@@ -1,0 +1,29 @@
+Main Menu:
+	1. Display Items
+	2. Purchase Items
+	3. Save and Exit
+Administrator-Only Menu:
+	4. Add Item
+	5. Remove Item
+	6. Display Coins
+	7. Reset Stock
+	8. Reset Coins
+	9. Abort Program
+
+Select your option (1-9): The id of the new stock will be: I0006
+Enter the item name: Enter the item description: Enter the price for the item: Error: the price is not valid.
+Enter the price for the item: Cancelling "add item" at user's request.
+The task Add Item failed to run successfully.
+Main Menu:
+	1. Display Items
+	2. Purchase Items
+	3. Save and Exit
+Administrator-Only Menu:
+	4. Add Item
+	5. Remove Item
+	6. Display Coins
+	7. Reset Stock
+	8. Reset Coins
+	9. Abort Program
+
+Select your option (1-9): 
