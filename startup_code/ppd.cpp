@@ -356,19 +356,23 @@ void purchaseItem(LinkedList* LinkedList) {
 
 void printChange(int change, LinkedList* VendingMachine) {
     int coinDenom[8] = {1000, 500, 200, 100, 50, 20, 10, 5};
-    int i = 0;
-    while (change != 0) {
-        if (change / coinDenom[i] > 0) {
-            if (i < 4) {
-                cout << "$" << coinDenom[i] / 100 << " ";
-            } else {
-                cout << coinDenom[i] << "c ";
+    string denominationSymbols[] = {"$10 ", "$5 ", "$2 ", "$1 ", "50c ", "20c ", "10c ", "5c "};
+    std::vector<int> changeList;
+    int denomAmount = 8;
+    int count;
+
+    for (int i = 0; i < denomAmount; i++) {
+        count = change / coinDenom[i];
+        for (int j = 0; j < count; j++) {
+            if (VendingMachine->purse[denomAmount-i].count > 0) {
+                cout << denominationSymbols[i];
+                VendingMachine->purse[denomAmount-i].count += 1;
+                changeList.push_back(i);
+                change -= coinDenom[i];
             }
-            change %= coinDenom[i];
-        } else {
-            i++;
         }
     }
+
     cout << endl;
 }
 
