@@ -54,17 +54,18 @@ void useLinkedList();
 
 int main(int argc, char **argv)
 {
-    // Make the vending machine linked list.
+    // Initialise Variables
     LinkedList vendingMachine;
-    /* validate command line arguments */
     bool allowedArgs = true;
-    //  save vending machine items in an output file
     std::string outFileName;
     std::string coinFile;
+
+    // Input Validation
     if (argc != 3 || string(argv[1]) != "stock.dat" || string(argv[2]) != "coins.dat") {
         cout << "You may have not entered the right arguments." << endl;
         allowedArgs = false;
     }
+
     // Adding requried documents.
     else {
         outFileName = argv[1];
@@ -74,54 +75,79 @@ int main(int argc, char **argv)
 
     string choice = "-1";
     bool exit = false;
+
     while (!std::cin.eof() && !exit && allowedArgs) {
-        
         printMainMenu();
         choice = Helper::readInput();
+
         if (!std::cin.eof()) {
             bool isInt = true;
             int choiceLen = choice.length();
+
+            // Type check for int
             for (int i = 0; i < choiceLen; ++i){
                 if (!isdigit(choice.at(i))){
                     isInt = false;
                 }
             }
+
+            // Menu Block
             if (isInt && choice != "") {
+
                 if (std::stoi(choice) == 1) {
+                    // Display Items
                     vendingMachine.sort();
                     vendingMachine.printItems();
                     cout << endl;
+
                 } else if (std::stoi(choice) == 2) {
-                    std::cout << "Purchase Items" << std::endl;
+                    // Purchase Items
                     purchaseItem(&vendingMachine);
+
                 } else if (std::stoi(choice) == 3) {
+                    // Save & Exit
                     exit = true;
+                    std::cout << "Save and Exit" << std::endl;
                     saveItem(outFileName, vendingMachine);
                     saveCoin(coinFile, vendingMachine);
-                    std::cout << "Save and Exit" << std::endl;
+
                 } else if (std::stoi(choice) == 4) {
-                    // This case adds items to the System.
+                    // Add Item
                     addItem(vendingMachine);
                     std::cin.clear();
+
                 } else if (std::stoi(choice) == 5) {
-                    // This case removes item from system.
+                    // Remove Item
                     removeItem(vendingMachine);
                     cin.clear();
+
                 } else if (std::stoi(choice) == 6) {
-                    // This case shows coins in system.
+                    // Displayt Coins
                     displayCoin(vendingMachine);
+
                 } else if (std::stoi(choice) == 7) {
+                    // Reset Stock
                     resetStock(vendingMachine);
+
                 } else if (std::stoi(choice) == 8) {
-                    std::cout << "\"All coins have been reset to the default level of " << DEFAULT_COIN_COUNT << "\"" << std::endl;
+                    // Reset Coins
+                    cout << "\"All coins have been reset to the default level of: ";
+                    cout << DEFAULT_COIN_COUNT;
+                    cout << "\"" << endl;
                     resetCoin(vendingMachine);
+
                 } else if (std::stoi(choice) == 9) {
+                    // Abort Program
                     exit = true;
                     std::cout << "Abort Program" << std::endl;
+
                 } else if (!std::cin.eof()) {
+                    // Invalid Input Number
                     std::cout << "Error: menu item selected is not valid." << std::endl;
+
                 }
             } else {
+                // Invalid Input
                 std::cout << "Error: input was not a number. Please try again." << std::endl;
                 std::cin.clear();
                 // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -135,8 +161,8 @@ int main(int argc, char **argv)
 void loadItem(char **argv, LinkedList& vendingMachine){
    // Reading the data inserted.
    bool allowedArgs = true;
-   string coinsDat = argv[2];
    string stockDat = argv[1];
+   string coinsDat = argv[2];
    // Reading files
    string stockLine;
    // Save the stock file as a linked list.
@@ -220,96 +246,105 @@ void purchaseItem(LinkedList* LinkedList) {
     std::string itemId;
     std::getline(std::cin, itemId);
     Helper::strip(itemId);
-    if ((!cin.eof()) || (*LinkedList).get(itemId) != nullptr) {
-        cout << itemId << endl;
+    if ((!cin.eof())) {
+        if ((*LinkedList).get(itemId) == 0) {
+            cout << "Invalid Input" << endl;
+            cout << endl;
+        } else {
 
-        Stock* item = (*LinkedList).get(itemId); //clear
+            Stock* item = (*LinkedList).get(itemId); //clear
 
-        if (item->on_hand > 0) {
+            if (item->on_hand > 0) {
 
-            // Printing the item
-            cout << "You have selected \"";
-            cout << item->name;
-            cout << " - ";
-            cout << item->description;
-            cout << "\". This will cost you $ ";
+                // Printing the item
+                cout << "You have selected \"";
+                cout << item->name;
+                cout << " - ";
+                cout << item->description;
+                cout << "\". This will cost you $ ";
 
-            // Set local variables.
-            // Price cost = item->price;
-            int dollar = item->price.dollars;
-            int cent = item->price.cents;
-            string money = std::to_string(dollar) + "." + std::to_string(cent);
-            cout << money << "." << endl;
+                // Set local variables.
+                // Price cost = item->price;
+                int dollar = item->price.dollars;
+                int cent = item->price.cents;
+                string money = std::to_string(dollar) + "." + std::to_string(cent);
+                cout << money << "." << endl;
 
-            // Continuation
-            cout << "Please hand over the money - type in the value of each note/coin in cents.\nPress enter or ctrl-d on a new line to cancel this purchase:\n";
+                // Continuation
+                cout << "Please hand over the money - type in the value of each note/coin in cents.\nPress enter or ctrl-d on a new line to cancel this purchase:\n";
 
-            bool paidFor = false;
-            int remainingCost = (dollar * 100) + cent;
-            vector<int> coinsToAdd;
-            string moneyIn;
+                bool paidFor = false;
+                int remainingCost = (dollar * 100) + cent;
+                vector<int> coinsToAdd;
+                string moneyIn;
 
-            // Loop until the item has been paidFor or the user has terminated the loop
-            while (paidFor == false) {
-                dollar = remainingCost / 100;
-                cent = remainingCost % 100;
+                // Loop until the item has been paidFor or the user has terminated the loop
+                while (paidFor == false) {
+                    dollar = remainingCost / 100;
+                    cent = remainingCost % 100;
 
-                cout << "Remaining Cost: $" << dollar << "." << cent << ": ";
-                moneyIn = Helper::readInput();
-                Helper::strip(moneyIn);
+                    cout << "Remaining Cost: $" << dollar << "." << cent << ": ";
+                    moneyIn = Helper::readInput();
+                    Helper::strip(moneyIn);
 
-                int coinDenoms[8] = {5, 10, 20, 50, 100, 200, 500, 1000};
-                int denomSize = sizeof(coinDenoms) / sizeof(coinDenoms[0]);
-                bool validDenomination = false;
-
-                for (int idx = 0; idx < denomSize; idx++) {
-                    if (stoi(moneyIn) == coinDenoms[idx]) {
-                        validDenomination = true;
-                    }
-                } 
-
-                if ((cin.eof()) || (moneyIn == "")) {
-                    // Base termination case
-                    cout << "Pressed ctrl-D or enter" << endl;
-                    paidFor = true;
-                } else if (validDenomination == false) {
-                    cout << "That is not a valid denomination" << endl;
-                } else {
-                    // Valid Input
-                    remainingCost -= stoi(moneyIn);
-
-                    // Add input to sumVector
-                    coinsToAdd.push_back(stoi(moneyIn));
-
-                    if (remainingCost <= 0) {
-                        // User has paid for the item
-                        paidFor = true;
-                        int change = abs(remainingCost);
-                        cout << "Here is your " << item->name << " and your change of $" << change / 100 << "." << change % 100 << ": ";
-                        printChange(change, LinkedList);
-                        cout << endl;
-
-                        // removing stock
-                        item->on_hand -= 1;
-
-                        // removing coins from purse
-                        int sizeAdd = coinsToAdd.size();
-                        for (int idx = 0; idx < sizeAdd; idx++) {
-                            int denomIdx = 0;
-                            for (int jdx = 0; jdx < 8; jdx++) {
-                                if (coinsToAdd[idx] == coinDenoms[jdx]) {
-                                    denomIdx = jdx;
+                    if (Helper::isInt(moneyIn)) {
+                        int coinDenoms[8] = {5, 10, 20, 50, 100, 200, 500, 1000};
+                        int denomSize = sizeof(coinDenoms) / sizeof(coinDenoms[0]);
+                        bool validDenomination = false;
+    
+                        for (int idx = 0; idx < denomSize; idx++) {
+                            if (stoi(moneyIn) == coinDenoms[idx]) {
+                                validDenomination = true;
+                            }
+                        } 
+    
+                        if ((cin.eof()) || (moneyIn == "")) {
+                            // Base termination case
+                            cout << "Pressed ctrl-D or enter" << endl;
+                            paidFor = true;
+                        } else if (validDenomination == false) {
+                            cout << "That is not a valid denomination" << endl;
+                        } else {
+                            // Valid Input
+                            remainingCost -= stoi(moneyIn);
+    
+                            // Add input to sumVector
+                            coinsToAdd.push_back(stoi(moneyIn));
+    
+                            if (remainingCost <= 0) {
+                                // User has paid for the item
+                                paidFor = true;
+                                int change = abs(remainingCost);
+                                cout << "Here is your " << item->name << " and your change of $" << change / 100 << "." << change % 100 << ": ";
+                                printChange(change, LinkedList);
+                                cout << endl;
+    
+                                // removing stock
+                                item->on_hand -= 1;
+    
+                                // removing coins from purse
+                                int sizeAdd = coinsToAdd.size();
+                                for (int idx = 0; idx < sizeAdd; idx++) {
+                                    int denomIdx = 0;
+                                    for (int jdx = 0; jdx < 8; jdx++) {
+                                        if (coinsToAdd[idx] == coinDenoms[jdx]) {
+                                            denomIdx = jdx;
+                                        }
+                                    }
+                                    LinkedList->purse[denomIdx].count++;
                                 }
                             }
-                            LinkedList->purse[denomIdx].count++;
                         }
+                    } else {
+                        cout << "we fucked up" << endl;
                     }
                 }
             }
+            else {
+                cout << "Item not in machine" << endl;
+            }
         }
-        else {
-            cout << "Item not in machine" << endl;
-        }
+        
     }
 }
 

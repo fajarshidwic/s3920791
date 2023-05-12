@@ -129,6 +129,11 @@ bool Helper::isInt(const std::string& input) {
             retVal = false;
         }
     }
+
+    // Added this because "nothing" should not be an int
+    if (input.length() == 0) {
+        retVal = false;
+    }
     return retVal;
 }
 
