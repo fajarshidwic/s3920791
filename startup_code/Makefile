@@ -15,8 +15,6 @@ run: ppd
 	./ppd stock.dat coins.dat
 
 test: ppd
-	./ppd ./input/printcoinstest/stock.dat ./input/printcoinstest/coins.dat < ./input/printcoinstest/input.txt > ./output/test/output.txt
-
+	./ppd ./output/final/stock.dat ./output/final/coins.dat < ./input/resetcointest/input.txt > ./output/final/output.txt 
 testAll: ppd
-	./ppd ./output/final/stock.dat ./output/final/coins.dat < ./input/printcoinstest/input.txt < ./input/printstockstest/input.txt > ./output/final/output.txt
-
+	cat ./input/printcoinstest/input.txt ./input/printstockstest/input.txt ./input/resetcointest/input.txt ./input/resetstocktest/input.txt | ./ppd ./output/final/stock.dat ./output/final/coins.dat > ./output/final/output.txt
