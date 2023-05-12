@@ -350,7 +350,9 @@ void purchaseItem(LinkedList* LinkedList) {
                 cout << "Item not in machine" << endl;
             }
         }
-        
+    } else {
+        clearerr(stdin);
+        cout << endl;
     }
 }
 
