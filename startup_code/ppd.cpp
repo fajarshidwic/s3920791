@@ -243,6 +243,7 @@ void purchaseItem(LinkedList* LinkedList) {
     while (!quit) {
         std::getline(std::cin, itemId);
         Helper::strip(itemId);
+
         if (itemId.length() > IDLEN) {
             std::cout << "Error: line entered was too long. Please try again.\n"
                     << "Error inputting ID of the product. Please try again.\n" 
@@ -251,6 +252,7 @@ void purchaseItem(LinkedList* LinkedList) {
             quit = true;
         }
     }
+
     if ((!cin.eof())) {
         // Check if the itemID exists
         if ((*LinkedList).get(itemId) == 0) {
@@ -366,21 +368,58 @@ void purchaseItem(LinkedList* LinkedList) {
 }
 
 void printChange(int change, LinkedList* VendingMachine) {
-    int coinDenom[8] = {1000, 500, 200, 100, 50, 20, 10, 5};
+    // Declare variables
+    vector<int> coinDenom = {1000, 500, 200, 100, 50, 20, 10, 5};
+    vector<int> addBack;
+    bool refund = false;
+    bool cancel = false;
+
+    // Loop until change given
     int i = 0;
     while (change != 0) {
-        if (change / coinDenom[i] > 0) {
+
+        if (change / coinDenom[i] <= 0) {
+            cancel = true;
+        }
+
+        if (VendingMachine->purse[i].count == 0) {
+            cancel = true;
+        }
+
+        // in case while loop becomes stuck
+        if (i > 7 && change > 0) {
+            change = 0; // stops the loop
+            cancel = true;
+            refund = true;
+        }
+
+        if (cancel) {
+            i++;
+        } else {
             if (i < 4) {
                 cout << "$" << coinDenom[i] / 100 << " ";
+                addBack.push_back(coinDemon[i]);
             } else {
                 cout << coinDenom[i] << "c ";
+                addBack.push_back(coinDemon[i]);
             }
             change %= coinDenom[i];
             VendingMachine->purse[7-i].count--;
-        } else {
-            i++;
+        }
+
+        if (refund) {
+            for (int idx = 0; idx < int(addBack.size()); idx++) {
+                int denomIdx = 0;
+                for (int jdx = 0; jdx < 8; jdx++) {
+                    if (addBack[idx] == coinDenom[7-jdx]) {
+                        denomIdx = jdx;
+                    }
+                }
+                VendingMachine->purse[denomIdx].count++;
+            }
         }
     }
+
     cout << endl;
 }
 
