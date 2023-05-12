@@ -28,7 +28,7 @@ void printMainMenu() {
             << "\t7. Reset Stock\n"
             << "\t8. Reset Coins\n" 
             << "\t9. Abort Program\n\n"
-            << "Select your option (1-9):";
+            << "Select your option (1-9): ";
 }
 bool loadItem(char **argv, LinkedList& vendingMachine);
 
@@ -131,9 +131,6 @@ int main(int argc, char **argv)
 
                 } else if (std::stoi(choice) == 8) {
                     // Reset Coins
-                    cout << "\"All coins have been reset to the default level of: ";
-                    cout << DEFAULT_COIN_COUNT;
-                    cout << "\"" << endl;
                     resetCoin(vendingMachine);
 
                 } else if (std::stoi(choice) == 9) {
@@ -321,7 +318,7 @@ void purchaseItem(LinkedList* LinkedList) {
                                 
                                 cout << "Here is your " << item->name << " and your change of $" << change / 100 << "." << change % 100 << ": ";
                                 printChange(change, LinkedList);
-                                cout << endl;
+                                cout << "Please come again soon.\n";
     
                                 // removing stock
                                 item->on_hand -= 1;
@@ -488,6 +485,7 @@ void removeItem(LinkedList& list) {
             quit = true;
         }
     }
+    quit = false;
     // Exit if bad input
     if (!quit && !cancel) {
         Stock* itemInfo = list.get(item);
@@ -504,7 +502,6 @@ void removeItem(LinkedList& list) {
             cout << "That item does not exist in system." << endl;
         }
     }
-    quit = false;
     if (cancel) {
         std::cout << "Cancelling \"Remove Item\" at user's request.\n"
                 << "The task Remove Item failed to run successfully."
@@ -544,6 +541,8 @@ void resetCoin(LinkedList& vendingMachine) {
     for (int i = 0; i < 8; i++) {
         vendingMachine.purse[i].count = DEFAULT_COIN_COUNT;
     }
+    cout << "All coins have been reset to the default level of: ";
+    cout << DEFAULT_COIN_COUNT << endl;
 }
 
 // delete this function in the final code
