@@ -376,6 +376,7 @@ void printChange(int change, LinkedList* VendingMachine) {
                 cout << coinDenom[i] << "c ";
             }
             change %= coinDenom[i];
+            VendingMachine->purse[7-i].count--;
         } else {
             i++;
         }
