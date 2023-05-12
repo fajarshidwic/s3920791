@@ -458,9 +458,9 @@ void addItem(LinkedList& list) {
                     }
                     if (!Helper::isInt(tokens[0]) || !Helper::isInt(tokens[1])){
                         std::cout << "Error: the price is not valid." << std::endl;
-                    } else if (std::stoi(tokens[0]) > 99 || std::stoi(tokens[0]) < 0) {
+                    } else if (tokens[0].length() >= 3 || std::stoi(tokens[0]) < 0) {
                         std::cout << "Error: the dollars are out of range." << std::endl;
-                    } else if (std::stoi(tokens[1]) > 99 || std::stoi(tokens[1]) < 0) {
+                    } else if (tokens[1].length() >= 3 || std::stoi(tokens[1]) < 0) {
                         std::cout << "Error: the cents are out of range." << std::endl;
                     } else if (std::stoi(tokens[1])%5) {
                         std::cout << "Error: the cents need to be a multiple of 5." << std::endl;
