@@ -1,0 +1,34 @@
+Main Menu:
+	1. Display Items
+	2. Purchase Items
+	3. Save and Exit
+Administrator-Only Menu:
+	4. Add Item
+	5. Remove Item
+	6. Display Coins
+	7. Reset Stock
+	8. Reset Coins
+	9. Abort Program
+
+Select your option (1-9): Purchase Item
+-------------
+Please enter the id of the item you wish to purchase:You have selected "Apple Pie - Delicious Stewed Apple in a Yummy Pastry envelope". This will cost you $ 3.0.
+Please hand over the money - type in the value of each note/coin in cents.
+Press enter or ctrl-d on a new line to cancel this purchase:
+Remaining Cost: $3.0: Enter a valid denomination
+Remaining Cost: $3.0: Enter a valid denomination
+Remaining Cost: $3.0: Enter a valid denomination
+Remaining Cost: $3.0: Pressed ctrl-D or enter
+Main Menu:
+	1. Display Items
+	2. Purchase Items
+	3. Save and Exit
+Administrator-Only Menu:
+	4. Add Item
+	5. Remove Item
+	6. Display Coins
+	7. Reset Stock
+	8. Reset Coins
+	9. Abort Program
+
+Select your option (1-9): 
