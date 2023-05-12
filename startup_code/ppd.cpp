@@ -239,9 +239,18 @@ void purchaseItem(LinkedList* LinkedList) {
 
     // Get itemID
     std::string itemId;
-    std::getline(std::cin, itemId);
-    Helper::strip(itemId);
-
+    bool quit = false;
+    while (!quit) {
+        std::getline(std::cin, itemId);
+        Helper::strip(itemId);
+        if (itemId.length() > IDLEN) {
+            std::cout << "Error: line entered was too long. Please try again.\n"
+                    << "Error inputting ID of the product. Please try again.\n" 
+                    << "Please enter the id of the item you wish to purchase:";
+        } else {
+            quit = true;
+        }
+    }
     if ((!cin.eof())) {
         // Check if the itemID exists
         if ((*LinkedList).get(itemId) == 0) {
@@ -488,6 +497,10 @@ void removeItem(LinkedList& list) {
         std::getline(std::cin, item);
         if (item == "" || std::cin.eof()) {
             cancel = true;
+        } else if (item.length() > IDLEN) {
+            std::cout << "Error: line entered was too long. Please try again.\n"
+                    << "Error inputting ID of the product. Please try again." 
+                    << std::endl;
         } else {
             quit = true;
         }
