@@ -103,6 +103,7 @@ int main(int argc, char **argv)
                 } else if (std::stoi(choice) == 2) {
                     // Purchase Items
                     purchaseItem(&vendingMachine);
+                    cin.clear();
 
                 } else if (std::stoi(choice) == 3) {
                     // Save & Exit
@@ -282,8 +283,16 @@ void purchaseItem(LinkedList* LinkedList) {
                     cout << "Remaining Cost: $" << dollar << "." << cent << ": ";
                     moneyIn = Helper::readInput();
                     Helper::strip(moneyIn);
+                    
+                    // This is to check for empty values
+                    if ((cin.eof()) || (moneyIn == "")) {
+                        // User cancels purchase
+                        cout << "Pressed ctrl-D or enter" << endl;
+                        paidFor = true;
+                        clearerr(stdin);
+                    } 
 
-                    if (Helper::isInt(moneyIn)) {
+                    else if (Helper::isInt(moneyIn)) {
                         // Initialise and set variables
                         int coinDenoms[8] = {5, 10, 20, 50, 100, 200, 500, 1000};
                         int denomSize = sizeof(coinDenoms) / sizeof(coinDenoms[0]);
@@ -295,12 +304,8 @@ void purchaseItem(LinkedList* LinkedList) {
                                 validDenomination = true;
                             }
                         } 
-    
-                        if ((cin.eof()) || (moneyIn == "")) {
-                            // User cancels purchase
-                            cout << "Pressed ctrl-D or enter" << endl;
-                            paidFor = true;
-                        } else if (validDenomination == false) {
+                        
+                        if (validDenomination == false) {
                             // Invalid Denomination
                             cout << "That is not a valid denomination" << endl;
                         } else {
