@@ -27,10 +27,10 @@ void printMainMenu() {
             << "\t6. Display Coins\n"
             << "\t7. Reset Stock\n"
             << "\t8. Reset Coins\n" 
-            << "\t9. Abort Program\n"
+            << "\t9. Abort Program\n\n"
             << "Select your option (1-9):";
 }
-void loadItem(char **argv, LinkedList& vendingMachine);
+bool loadItem(char **argv, LinkedList& vendingMachine);
 
 void saveItem(std::string outFileName, LinkedList& vendingMachine);
 void saveCoin(std::string outFileName, LinkedList& vendingMachine);
@@ -70,7 +70,7 @@ int main(int argc, char **argv)
     else {
         outFileName = argv[1];
         coinFile = argv[2];
-        loadItem(argv, vendingMachine);
+        allowedArgs = loadItem(argv, vendingMachine);
     }
 
     string choice = "-1";
@@ -139,8 +139,6 @@ int main(int argc, char **argv)
                 } else if (std::stoi(choice) == 9) {
                     // Abort Program
                     exit = true;
-                    std::cout << "Abort Program" << std::endl;
-
                 } else if (!std::cin.eof()) {
                     // Invalid Input Number
                     std::cout << "Error: menu item selected is not valid." << std::endl;
@@ -158,7 +156,7 @@ int main(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 
-void loadItem(char **argv, LinkedList& vendingMachine){
+bool loadItem(char **argv, LinkedList& vendingMachine){
    // Reading the data inserted.
    bool allowedArgs = true;
    string stockDat = argv[1];
@@ -220,9 +218,7 @@ void loadItem(char **argv, LinkedList& vendingMachine){
       cout << "Unable to open coin file" << endl;
    }
 
-   if (allowedArgs) {
-        std::cout << "\nStocks & Coins added!" << std::endl;
-    }
+   return allowedArgs;
 }
 
 void saveItem(std::string outFileName, LinkedList& vendingMachine) {

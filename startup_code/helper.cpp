@@ -55,7 +55,6 @@ string Helper::readInput()
 {
     string input;
     std::getline(std::cin, input);
-    std::cout << std::endl;
 
     return input;
 }
