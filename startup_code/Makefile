@@ -29,5 +29,8 @@ addstocktest: ppd
 	./ppd ./input/addstocktest/stock.dat ./input/addstocktest/coins.dat < ./input/addstocktest/addstocktest2/input.txt > ./output/addstocktest/output2.txt
 	./ppd ./input/addstocktest/stock.dat ./input/addstocktest/coins.dat < ./input/addstocktest/addstocktest3/input.txt > ./output/addstocktest/output3.txt
 
+removestocktest: ppd
+	./ppd ./input/removestocktest/stock.dat ./input/removestocktest/coins.dat < ./input/removestocktest/removestocktest1/input.txt > ./output/removestocktest/output1.txt
+
 testAll: ppd
 	cat ./input/printcoinstest/input.txt ./input/printstockstest/input.txt ./input/resetcointest/input.txt ./input/resetstocktest/input.txt | ./ppd ./output/final/stock.dat ./output/final/coins.dat > ./output/final/output.txt
