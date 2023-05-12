@@ -16,3 +16,6 @@ run: ppd
 
 test: ppd
 	./ppd ./input/test1_copy_4/stock.dat ./input/test1_copy_4/coins.dat < ./input/test1_copy_4/input.txt > ./output/test/output.txt
+
+testAll: ppd
+	./ppd 
