@@ -154,6 +154,7 @@ int main(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 
+
 bool loadItem(char **argv, LinkedList& vendingMachine){
    // Reading the data inserted.
    bool allowedArgs = true;
