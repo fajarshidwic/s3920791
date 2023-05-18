@@ -32,6 +32,7 @@ void printMainMenu() {
 }
 bool loadItem(char **argv, LinkedList& vendingMachine);
 
+// Save to files
 void saveItem(std::string outFileName, LinkedList& vendingMachine);
 void saveCoin(std::string outFileName, LinkedList& vendingMachine);
 
@@ -477,7 +478,6 @@ void addItem(LinkedList& list) {
     }
 }
 
-
 // TODO: ensure that the memory used to store this is removed.
 void removeItem(LinkedList& list) {
     bool quit = false;
@@ -527,7 +527,7 @@ void resetStock(LinkedList& list){
     std::cout << "All stock has been reset to the default level of 20" << std::endl;
 }
 
-// Condition: the coins arrive presorted.
+// precondition: the coins arrive presorted.
 void displayCoin(LinkedList& list) {
     cout << "Coins Summary" << endl;
     cout << Helper::printBorder(13);
@@ -550,52 +550,4 @@ void resetCoin(LinkedList& vendingMachine) {
     }
     cout << "All coins have been reset to the default level of: ";
     cout << DEFAULT_COIN_COUNT << endl;
-}
-
-// delete this function in the final code
-void useLinkedList() {
-    // The stock data should be stored in linked list in this format
-    // Stock(id="", name="", description="", price=0.0, on_hand=20)  defult initialization
-    Stock* stock1 = new Stock("I0001", "Burger", "A cheese burger", 12.99, 10);
-    Stock* stock2 = new Stock("I0002", "Pizza", "A big pizza", 15.99, 10);
-    Stock* stock3 = new Stock("I0003", "Tea", "Black tea", 6.75, 10);
-    Stock* stock4 = new Stock("I0004", "Fruit", "any fruit", 0.95, 10);
-    Stock* stock5 = new Stock("I0005", "Apple Pie", "description", 1.5, 100);
-
-    LinkedList list;
-
-    list.addFront(stock1);
-    list.addBack(stock2);
-    list.addFront(stock3);
-    list.addBack(stock4);
-    list.addAt(stock5, 2); // addAt(data, index) I think it will probably be used rarely
-    // or use this: which the on_hand param has initialized 20 in defult
-    list.addFront(new Stock("I0006", "Lemon Tart", "description", 3.75)); 
-    // print items
-    list.printItems();
-
-    list.removeBack();
-    list.removeFront();
-    list.removeAt(2);
-    list.remove("I0002");
-    list.sort();
-   
-    list.printItems();
-   
-    // get() will return nullptr when id not found
-    Stock* data = list.get("I0003");
-    if (data != nullptr) {
-        std::cout << std::endl;
-        std::cout<< "Name: " << data->name << "\n"
-            << "ID: " << data->id << "\n"
-            << "Stock: "<< data->on_hand << "\n"
-            << "Price: \n"
-            << "\tdollars: "<< data->price.dollars << "\n"
-            << "\tcents: "<< data->price.cents << "\n"
-            << "Description: " << data->description << std::endl;
-            data->on_hand -= 1;
-    } else {
-        std::cout << "Item not found" << std::endl;
-    }
-    list.printItems();
 }
