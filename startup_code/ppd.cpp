@@ -16,8 +16,43 @@ using namespace std;
  * Make sure free memory and close all files before exiting the program.
  **/
 
+/* Colour Codes 
+
+COLORS:
+\x1b[30m     BLACK 
+\x1b[31m     RED 
+\x1b[32m     GREEN 
+\x1b[33m     YELLOW 
+\x1b[34m     BLUE 
+\x1b[35m     MAGENTA 
+\x1b[36m     CYAN 
+\x1b[37m     WHITE
+
+BACKGROUND COLORS:
+\x1b[40m     BLACK 
+\x1b[41m     RED 
+\x1b[42m     GREEN 
+\x1b[43m     YELLOW 
+\x1b[44m     BLUE 
+\x1b[45m     MAGENTA 
+\x1b[46m     CYAN 
+\x1b[47m     WHITE
+ 
+RESET CODE:
+\x1b[0m
+
+USAGE:
+
+cout << "[color]TEXT[resetcode] << endl;
+cout << "\x1b[35mTEXT\x1b[0m" << endl;
+
+SOURCE:
+https://notdefined.tech/blog/how-to-add-color-to-your-terminal-output/
+
+*/
+
 void printMainMenu() {
-    std::cout << "Main Menu:\n" 
+    std::cout << "\n\x1b]1337;SetMark\x07Main Menu:\n"
             << "\t1. Display Items\n" 
             << "\t2. Purchase Items\n" 
             << "\t3. Save and Exit\n" 
@@ -62,7 +97,7 @@ int main(int argc, char **argv)
 
     // Input Validation
     if (argc != 3) {
-        cout << "You may have not entered the right arguments." << endl;
+        cout << "\x1b[31mYou may have not entered the right arguments.\x1b[0m" << endl;
         allowedArgs = false;
     }
 
@@ -93,7 +128,7 @@ int main(int argc, char **argv)
 
             // Menu Block
             if (isInt && choice != "") {
-
+                cout << endl;
                 if (std::stoi(choice) == 1) {
                     // Display Items
                     vendingMachine.sort();
@@ -234,139 +269,131 @@ void saveCoin(std::string outFileName, LinkedList& vendingMachine) {
 
 void purchaseItem(LinkedList* LinkedList) {
 
-    cout << "Purchase Item" << endl;
+    cout << "\nPurchase Item" << endl;
     cout << "-------------" << endl;
-    cout << "Please enter the id of the item you wish to purchase:";
 
     // Get itemID
     std::string itemId;
     bool quit = false;
+    bool valid = true;
     while (!quit) {
+        cout << "\n\x1b[0mPlease enter the id of the item you wish to purchase: \x1b[33m";
         std::getline(std::cin, itemId);
         Helper::strip(itemId);
 
-        if (itemId.length() > IDLEN) {
-            std::cout << "Error: line entered was too long. Please try again.\n"
-                    << "Error inputting ID of the product. Please try again.\n" 
-                    << "Please enter the id of the item you wish to purchase:";
+        if ((cin.eof()) || (itemId == "")) {
+            cout << "\x1b[0m" << "\x1b[31mPressed ctrl-D or enter\x1b[0m" << endl;
+            quit = true;
+            valid = false;
+        } else if (itemId.length() != IDLEN) {
+            cout << "\x1b[0m" << "\x1b[31mInvalid ItemID Length\x1b[0m" << endl;
+        } else if ((quit == false) && ((*LinkedList).get(itemId) == 0)) {
+            cout << "\x1b[0m" << "\x1b[31mItem ID does not exist\x1b[0m" << endl;
         } else {
+            cout << "triggered" << endl;
             quit = true;
         }
     }
 
-    if ((!cin.eof())) {
+    if (valid) {
         // Check if the itemID exists
-        if ((*LinkedList).get(itemId) == 0) {
-            cout << "Invalid Input" << endl;
-            cout << endl;
-        } else {
+        Stock* item = (*LinkedList).get(itemId);
+        if (item->on_hand > 0) {
+            // Printing the item
+            cout << "\x1b[0m";
+            cout << "You have selected \x1b[33m\"";
+            cout << item->name;
+            cout << " - ";
+            cout << item->description;
+            cout << "\"\x1b[0m. This will cost you \x1b[32m$";
+            // Set local variables.
+            int dollar = item->price.dollars;
+            int cent = item->price.cents;
+            string money = std::to_string(dollar) + "." + std::to_string(cent);
+            // Continuation
+            cout << money << "\x1b[0m.\n" << endl;
+            cout << "Please hand over the money - type in the value of each note/coin in cents.\n"
+                 << "Press enter or ctrl-d on a new line to cancel this purchase:\n\n";
+            // Initialise more Variables
+            bool paidFor = false;
+            int remainingCost = (dollar * 100) + cent;
+            vector<int> coinsToAdd;
+            string moneyIn;
+            // Loop until the item has been paidFor or the user has terminated the loop
+            while (paidFor == false) {
+                dollar = remainingCost / 100;
+                cent = remainingCost % 100;
+                cout << "Remaining Cost: \x1b[32m$" << dollar << "." << cent << "\x1b[0m: ";
+                moneyIn = Helper::readInput();
+                Helper::strip(moneyIn);
+                
+                // This is to check for empty values
+                if ((cin.eof()) || (moneyIn == "")) {
+                    // User cancels purchase
+                    cout << "\x1b[31mPressed ctrl-D or enter\x1b[0m\n" << endl;
+                    paidFor = true;
+                    clearerr(stdin);
+                } 
+                else if (Helper::isInt(moneyIn)) {
+                    // Initialise and set variables
+                    int coinDenoms[8] = {5, 10, 20, 50, 100, 200, 500, 1000};
+                    int denomSize = sizeof(coinDenoms) / sizeof(coinDenoms[0]);
+                    bool validDenomination = false;
 
-            Stock* item = (*LinkedList).get(itemId);
-
-            if (item->on_hand > 0) {
-
-                // Printing the item
-                cout << "You have selected \"";
-                cout << item->name;
-                cout << " - ";
-                cout << item->description;
-                cout << "\". This will cost you $ ";
-
-                // Set local variables.
-                int dollar = item->price.dollars;
-                int cent = item->price.cents;
-                string money = std::to_string(dollar) + "." + std::to_string(cent);
-
-                // Continuation
-                cout << money << "." << endl;
-                cout << "Please hand over the money - type in the value of each note/coin in cents.\nPress enter or ctrl-d on a new line to cancel this purchase:\n";
-
-                // Initialise more Variables
-                bool paidFor = false;
-                int remainingCost = (dollar * 100) + cent;
-                vector<int> coinsToAdd;
-                string moneyIn;
-
-                // Loop until the item has been paidFor or the user has terminated the loop
-                while (paidFor == false) {
-                    dollar = remainingCost / 100;
-                    cent = remainingCost % 100;
-
-                    cout << "Remaining Cost: $" << dollar << "." << cent << ": ";
-                    moneyIn = Helper::readInput();
-                    Helper::strip(moneyIn);
-                    
-                    // This is to check for empty values
-                    if ((cin.eof()) || (moneyIn == "")) {
-                        // User cancels purchase
-                        cout << "Pressed ctrl-D or enter" << endl;
-                        paidFor = true;
-                        clearerr(stdin);
+                    // Check if the input is a valid denomination
+                    for (int idx = 0; idx < denomSize; idx++) {
+                        if (stoi(moneyIn) == coinDenoms[idx]) {
+                            validDenomination = true;
+                        }
                     } 
+                    
+                    if (validDenomination == false) {
+                        // Invalid Denomination
+                        cout << "\x1b[31mEnter a Valid Denomination\x1b[0m\n" << endl;
+                    } else {
+                        // Valid Input
+                        remainingCost -= stoi(moneyIn);
 
-                    else if (Helper::isInt(moneyIn)) {
-                        // Initialise and set variables
-                        int coinDenoms[8] = {5, 10, 20, 50, 100, 200, 500, 1000};
-                        int denomSize = sizeof(coinDenoms) / sizeof(coinDenoms[0]);
-                        bool validDenomination = false;
-    
-                        // Check if the input is a valid denomination
-                        for (int idx = 0; idx < denomSize; idx++) {
-                            if (stoi(moneyIn) == coinDenoms[idx]) {
-                                validDenomination = true;
-                            }
-                        } 
+                        // Add input to sumVector
+                        coinsToAdd.push_back(stoi(moneyIn));
                         
-                        if (validDenomination == false) {
-                            // Invalid Denomination
-                            cout << "That is not a valid denomination" << endl;
-                        } else {
-                            // Valid Input
-                            remainingCost -= stoi(moneyIn);
-    
-                            // Add input to sumVector
-                            coinsToAdd.push_back(stoi(moneyIn));
+                        // Paid for item
+                        if (remainingCost <= 0) {
+                            // User has paid for the item
+                            paidFor = true;
+                            int change = abs(remainingCost);
                             
-                            // Paid for item
-                            if (remainingCost <= 0) {
-                                // User has paid for the item
-                                paidFor = true;
-                                int change = abs(remainingCost);
-                                
-                                cout << "Here is your " << item->name << " and your change of $" << change / 100 << "." << change % 100 << ": ";
-                                if (printChange(change, LinkedList)) {
-                                    // if failed to give change
-                                    cout << "Sorry, we don't have enough coins to give you change" << endl;
-                                    cout << "Try again with more exact coins" << endl;
-                                } else {
-                                    // if successfully gave change
-                                    cout << "Please come again soon.\n";
-    
-                                    // removing stock
-                                    item->on_hand -= 1;
+                            cout << "\nHere is your " << item->name << " and your change of \x1b[32m$" << change / 100 << "." << change % 100 << "\x1b[0m: ";
+                            if (printChange(change, LinkedList)) {
+                                // if failed to give change
+                                cout << "\x1b[31mSorry, we don't have enough coins to give you change" << endl;
+                                cout << "Try again with more exact coins\x1b[0m" << endl;
+                            } else {
+                                // if successfully gave change
+                                cout << "Please come again soon!\n\n";
 
-                                    // removing coins from purse
-                                    int sizeAdd = coinsToAdd.size();
-                                    for (int idx = 0; idx < sizeAdd; idx++) {
-                                        int denomIdx = 0;
-                                        for (int jdx = 0; jdx < 8; jdx++) {
-                                            if (coinsToAdd[idx] == coinDenoms[jdx]) {
-                                                denomIdx = jdx;
-                                            }
+                                // removing stock
+                                item->on_hand -= 1;
+                                // removing coins from purse
+                                int sizeAdd = coinsToAdd.size();
+                                for (int idx = 0; idx < sizeAdd; idx++) {
+                                    int denomIdx = 0;
+                                    for (int jdx = 0; jdx < 8; jdx++) {
+                                        if (coinsToAdd[idx] == coinDenoms[jdx]) {
+                                            denomIdx = jdx;
                                         }
-                                        LinkedList->purse[denomIdx].count++;
                                     }
+                                    LinkedList->purse[denomIdx].count++;
                                 }
                             }
                         }
-                    } else {
-                        cout << "Enter a valid denomination" << endl;
                     }
+                } else {
+                    cout << "\x1b[31mEnter a Valid Denomination\x1b[0m\n" << endl;
                 }
             }
-            else {
-                cout << "Item not in machine" << endl;
-            }
+        } else {
+            cout << "\x1b[31mItem not in machine\x1b[0m" << endl;
         }
     } else {
         clearerr(stdin);
