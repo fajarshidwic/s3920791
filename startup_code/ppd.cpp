@@ -470,20 +470,20 @@ void addItem(LinkedList& list) {
     int stepto = 0;
     double price = 0;
     std::string name, description, price_s;
-    std::cout << "The id of the new stock will be: " << newID << std::endl;
+    std::cout << "The id of the new stock will be: \x1b[33m" << newID << "\x1b[0m" << std::endl;
     
     while (stepto < 3 && !cancel) {
         if (stepto == 0) {
             // Step 0: ask the user to enter the name.
-            std::cout << "Enter the item name: ";
+            std::cout << "Enter the item name: \x1b[33m";
             std::getline(std::cin, name);
             name = Helper::strip(name);
             if (name == "" || std::cin.eof()) {
                 cancel = true;
             } else {
                 if (name.length() > NAMELEN){
-                    std::cout << "Error: line entered was too long. Please try again.\n"
-                                << "Error inputting name of the product. Please try again." 
+                    std::cout << "\x1b[31mError: line entered was too long. Please try again.\n"
+                                << "Error inputting name of the product. Please try again. \x1b[0m"
                                 << std::endl;
                 } else {
                     stepto++;
@@ -491,15 +491,15 @@ void addItem(LinkedList& list) {
             }
         } else if (stepto == 1) {
             // Step 1: ask the user to enter the description.
-            std::cout << "Enter the item description: ";
+            std::cout << "\x1b[0mEnter the item description: ";
             std::getline(std::cin, description);
             description = Helper::strip(description);
             if (description =="" || std::cin.eof()) {
                 cancel = true;
             } else {
                 if (description.length() > DESCLEN) {
-                    std::cout << "Error: line entered was too long. Please try again.\n"
-                                << "Error inputting the description of the product. Please try again." 
+                    std::cout << "\x1b[31mError: line entered was too long. Please try again.\n"
+                                << "Error inputting the description of the product. Please try again.\x1b[0m" 
                                 << std::endl;
                 }else {
                     stepto++;
@@ -507,8 +507,9 @@ void addItem(LinkedList& list) {
             }
         } else if (stepto == 2) {
             // Step 2: ask the user to enter the price.
-            std::cout << "Enter the price for the item: ";
+            std::cout << "Enter the price for the item: \x1b[32m";
             std::getline(std::cin, price_s);
+            std::cout << "\x1b[0m";
             if (price_s == "" || std::cin.eof()) {
                 cancel = true;
             } else {
@@ -534,19 +535,19 @@ void addItem(LinkedList& list) {
                         tokens[1].append("0");
                     }
                     if (!Helper::isInt(tokens[0]) || !Helper::isInt(tokens[1])){
-                        std::cout << "Error: the price is not valid." << std::endl;
+                        std::cout << "\x1b[31mError: the price is not valid.\x1b[0m" << std::endl;
                     } else if (tokens[0].length() >= 3 || std::stoi(tokens[0]) < 0) {
-                        std::cout << "Error: the dollars are out of range." << std::endl;
+                        std::cout << "\x1b[31mError: the dollars are out of range.\x1b[0m" << std::endl;
                     } else if (tokens[1].length() >= 3 || std::stoi(tokens[1]) < 0) {
-                        std::cout << "Error: the cents are out of range." << std::endl;
+                        std::cout << "\x1b[31mError: the cents are out of range.\x1b[0m" << std::endl;
                     } else if (std::stoi(tokens[1])%5) {
-                        std::cout << "Error: the cents need to be a multiple of 5." << std::endl;
+                        std::cout << "\x1b[31mError: the cents need to be a multiple of 5.\x1b[0m" << std::endl;
                     } else {
                         price = std::stod(price_s);
                         stepto ++ ;
                     }
                 } else {
-                    std::cout << "Error: the price is not valid." << std::endl;
+                    std::cout << "\x1b[31mError: the price is not valid.\x1b[0m" << std::endl;
                 }
             }
         }
@@ -571,13 +572,13 @@ void removeItem(LinkedList& list) {
     bool cancel = false;
     std::string item;
     while (!quit && !cancel) {
-        cout << "Enter the item id of the item to remove from the menu: ";
+        cout << "Enter the item \x1b[33mID\x1b[0m of the item to \x1b[31mremove\x1b[0m from the menu: \x1b[33m";
         std::getline(std::cin, item);
         if (item == "" || std::cin.eof()) {
             cancel = true;
         } else if (item.length() > IDLEN) {
-            std::cout << "Error: line entered was too long. Please try again.\n"
-                    << "Error inputting ID of the product. Please try again." 
+            std::cout << "\x1b[31mError: line entered was too long. Please try again.\n"
+                    << "Error inputting ID of the product. Please try again.\x1b[0m" 
                     << std::endl;
         } else {
             quit = true;
@@ -588,21 +589,21 @@ void removeItem(LinkedList& list) {
     if (!quit && !cancel) {
         Stock* itemInfo = list.get(item);
         if (itemInfo != nullptr) {
-            cout << "\"";
+            cout << "\"\x1b[33m";
             cout << itemInfo->id;
-            cout << " - ";
+            cout << "\x1b[0m - \x1b[33m";
             cout << itemInfo->name;
-            cout << " - ";
+            cout << "\x1b[0m - ";
             cout << itemInfo->description;
-            cout << "\" has been removed from the system." << endl;
+            cout << "\" has been \x1b[31mremoved\x1b[0m from the system." << endl;
             list.remove(item);
         } else {
-            cout << "That item does not exist in system." << endl;
+            cout << "\x1b[31mThat item does not exist in system.\x1b[0m" << endl;
         }
     }
     if (cancel) {
         std::cout << "Cancelling \"Remove Item\" at user's request.\n"
-                << "The task Remove Item failed to run successfully."
+                << "\x1b[31mThe task Remove Item failed to run successfully.\x1b[0m"
                 << std::endl;
         clearerr(stdin);
     }
@@ -622,12 +623,12 @@ void resetStock(LinkedList& list){
 void displayCoin(LinkedList& list) {
     cout << "Coins Summary" << endl;
     cout << Helper::printBorder(13);
-    cout << "Denomination    |    Count" << endl;
+    cout << "\x1b[32mDenomination\x1b[0m    |    Count" << endl;
     // Denom side == 16, count side == 10, Total = 27.
     cout << Helper::printBorder(27);
     int purseLen = sizeof(list.purse);
     for (int i=0; i < purseLen; i++) {
-        cout << Helper::writeOnSize(16, list.purse[i].getName(), true);
+        cout << "\x1b[32m" << Helper::writeOnSize(16, list.purse[i].getName(), true) << "\x1b[0m";
         cout << "|";
         cout << Helper::writeOnSize(10, std::to_string(list.purse[i].count), false) << endl;
     }

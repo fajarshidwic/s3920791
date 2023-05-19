@@ -167,22 +167,21 @@ void LinkedList::printItems() {
     Node* current = head;
     cout << "Items Menu" << endl;
     cout << "----------" << endl;
-    cout << "ID   |Name                                    | Available | Price" << endl;
+    cout << "\x1b[33mID\x1b[0m   |\x1b[33mName\x1b[0m                                    | Available | \x1b[32mPrice\x1b[0m" << endl;
     cout << "-----------------------------------------------------------------" << endl;
     for (unsigned i=0; i<count; ++i) {
-        cout << std::left << std::setw(5) << current->data->id
-            << "|" << std::setw(40) << current->data->name
-            << "|" << std::setw(11) << current->data->on_hand
-            << "|$";
+        cout << std::left << std::setw(5) << "\x1b[33m" << current->data->id
+            << "\x1b[0m|\x1b[33m" << std::setw(40) << current->data->name
+            << "\x1b[0m|" << std::setw(11) << current->data->on_hand
+            << "|\x1b[32m$";
         if (current->data->price.dollars < 10) {
             cout << " ";
         }
         cout << current->data->price.dollars << '.' << std::setw(2) << std::setfill('0') << current->data->price.cents
             << std::setfill(' ')
-            << endl;
-        current = current->next;
-    }
-    
+            << "\x1b[0m" << endl;
+        current = current->next; 
+    }   
 }
 
 void LinkedList::printCoins(std::ostream& outfile) {
