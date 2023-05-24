@@ -96,15 +96,22 @@ int main(int argc, char **argv)
     std::string coinFile;
 
     // Input Validation
-    if (argc != 3) {
-        cout << "\x1b[31mYou may have not entered the right arguments.\x1b[0m" << endl;
+
+    if (argv[1] == NULL || string(argv[1]) != "stock.dat") {
+        cout << "\x1b[31mThe first argument must be stock.dat\x1b[0m" << endl;
+        allowedArgs = false;
+    }
+
+    if (argv[2] == NULL || string(argv[2]) != "coins.dat") {
+        cout << "\x1b[31mThe second argument must be coins.dat\x1b[0m" << endl;
         allowedArgs = false;
     }
 
     // Adding requried documents.
-    else {
+    if (allowedArgs) {
         outFileName = argv[1];
         coinFile = argv[2];
+        cout << "name 1: " << outFileName << ", name 2: " << coinFile << endl;
         allowedArgs = loadItem(argv, vendingMachine);
     }
 
@@ -116,18 +123,22 @@ int main(int argc, char **argv)
         choice = Helper::readInput();
 
         if (!std::cin.eof()) {
-            bool isInt = true;
+            bool proceed = true;
             int choiceLen = choice.length();
 
             // Type check for int
             for (int i = 0; i < choiceLen; ++i){
                 if (!isdigit(choice.at(i))){
-                    isInt = false;
+                    proceed = false;
                 }
             }
 
+            if (choiceLen > 1) {
+                proceed = false;
+            }
+
             // Menu Block
-            if (isInt && choice != "") {
+            if (proceed && choice != "") {
                 cout << endl;
                 if (std::stoi(choice) == 1) {
                     // Display Items
@@ -188,7 +199,6 @@ int main(int argc, char **argv)
     
     return EXIT_SUCCESS;
 }
-
 
 bool loadItem(char **argv, LinkedList& vendingMachine){
    // Reading the data inserted.
@@ -564,7 +574,6 @@ void addItem(LinkedList& list) {
         std::cout << "This item \"" << name << " - " << description << "\" has now been added to the menu." << std::endl;
     }
 }
-
 
 // TODO: ensure that the memory used to store this is removed.
 void removeItem(LinkedList& list) {
