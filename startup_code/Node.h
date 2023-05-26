@@ -85,4 +85,22 @@ public:
     Node* next;
 };
 
+/**
+ * try 2d LL implementation
+ * if not working delete
+*/
+// class OuterNode 
+// {
+// public:
+//     OuterNode();
+//     OuterNode(Stock* data, Node* innerHead = nullptr, OuterNode* next = nullptr);
+//     ~OuterNode();
+//     // pointer to the data held for the outer node 
+//     Stock* data;
+//     // pointer to innerNode's head
+//     Node* innerHead;
+//     // pointer to the next outer node in the list
+//     OuterNode* next;
+// };
+
 #endif // NODE_H

@@ -16,7 +16,11 @@ public:
     Node* getHead();
 
     void addFront(Stock* data);
+    // add 2d linkedlist (fail)
+    //  void addBack(Stock* data, OuterNode* outerHead);
     void addBack(Stock* data);
+    // add 2d linkedlist (fail)
+    //  OuterNode* addBackOuterNode(Stock *data, OuterNode* outerHead = nullptr);
     void addAt(Stock* data, unsigned index);
     
     void removeFront();
@@ -34,8 +38,11 @@ public:
     Stock* get(std::string id);
     
     void sort();
-
+    // print 2d linked list (fail)
+    // void printItems(OuterNode* current);
     void printItems();
+    // print 2d linked list (fail)
+    // void printOuterItems();
     void printItems(std::ostream& outfile);
     void printCoins(std::ostream& outfile);
     void printIdOnly();
@@ -44,6 +51,7 @@ public:
 private:
     // the beginning of the list
     Node* head;
+   //  OuterNode* outerHead;
   
     // how many nodes are there in the list?
     unsigned count;

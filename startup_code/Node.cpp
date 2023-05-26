@@ -21,3 +21,19 @@ Node::Node(Stock* data, Node* next)
 
 Node::~Node(){
 }
+
+/**
+ * try 2d LL implementation
+ * if not working delete
+*/
+// OuterNode::OuterNode(){
+//     data = nullptr;
+//     innerHead = nullptr;
+//     next = nullptr;
+// }
+
+// OuterNode::OuterNode(Stock* data, Node* innerHead, OuterNode* next)
+// : data(data), innerHead(innerHead), next(next) {}
+
+// OuterNode::~OuterNode(){
+// }

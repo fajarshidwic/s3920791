@@ -1,0 +1,14 @@
+-|Meat Pie|-|0.00|0
+I0001|Steak & Cheese|Combination of steak and cheese surrounded by pastry|3.50|10
+I0002|Chicken & Mushroom|Combination of Chicken & Mushroom surrounded by pastry|3.50|10
+I0003|Steak & Onion|Combination of Steak & Onion surrounded by pastry|3.50|10
+I0004|Spanish & Feta|Combination of Spanish & Feta surrounded by pastry|3.50|10
+-|Cake|-|0.00|0
+I0010|Apple Pie|Delicious Stewed Apple in a Yummy Pastry envelope|3.00|20
+I0011|Lemon Cheesecake|A delicious, 1/8 size slice of cheesecake|4.00|10
+I0012|Lemon Meringue Pie|This pie has a tender pastry crust, a tangy lemon filling and a topping of soft, fluffy meringue.|3.00|20
+I0013|Lemon Tart|A delicious lemon butter tart with a pastry base|3.75|12
+-|Coffee|-|0.00|0
+I0020|Latte|Espresso with milk|3.00|20
+I0021|Cappuccino|Espresso with milk|3.00|10
+I0022|Esspresso|Esspresso|3.00|12

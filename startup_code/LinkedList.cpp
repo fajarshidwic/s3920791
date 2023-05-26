@@ -28,11 +28,27 @@ Node* LinkedList::getHead() {
     return head;
 }
 
+
 void LinkedList::addFront(Stock* data) {
     Node* newNode = new Node(data, head);
     this->head = newNode;
     count ++;
 }
+
+// add 2d linked list (fail)
+// void LinkedList::addBack(Stock *data, OuterNode* outerHead) {
+//     Node* newNode = new Node(data);
+//     if (outerHead->innerHead != nullptr) {
+//         Node* current = outerHead->innerHead;
+//         while (current->next != nullptr) {
+//             current = current->next;
+//         }
+//         current->next = newNode;
+//     } else {
+//         outerHead->innerHead = newNode;
+//     }
+//     count ++;
+// }
 
 void LinkedList::addBack(Stock *data) {
     Node* newNode = new Node(data);
@@ -47,6 +63,21 @@ void LinkedList::addBack(Stock *data) {
     }
     count ++;
 }
+// add 2d linked list (fail)
+// OuterNode* LinkedList::addBackOuterNode(Stock *data, OuterNode* outerHead) {
+//     OuterNode* newNode = new OuterNode(data);
+//     if (outerHead != nullptr) {
+//         OuterNode* current = outerHead;
+//         while (current->next != nullptr) {
+//             current = current->next;
+//         }
+//         current->next = newNode;
+//     } else {
+//         outerHead = newNode;
+//     }
+//     count ++;
+//     return outerHead;
+// }
 
 void LinkedList::addAt(Stock *data, unsigned index) {
     if (index <= count) {
@@ -162,13 +193,35 @@ Stock* LinkedList::get(std::string id) {
 void LinkedList::sort() {
     head = mergeSort(head);
 }
+// print 2d linked list (fail)
+// void LinkedList::printItems(OuterNode* current) {
+//    //  cout << "Items Menu" << endl;
+//    //  cout << "----------" << endl;
+//    //  cout << "ID   |Name                                    | Available | Price" << endl;
+//    //  cout << "-----------------------------------------------------------------" << endl;
+//     Node* curr = current->innerHead;
+//     for (unsigned i=0; i<count; ++i) {
+//         cout << std::left << std::setw(5) << current->data->id
+//             << "|" << std::setw(40) << current->data->name
+//             << "|" << std::setw(11) << current->data->on_hand
+//             << "|$";
+//         if (current->data->price.dollars < 10) {
+//             cout << " ";
+//         }
+//         cout << current->data->price.dollars << '.' << std::setw(2) << std::setfill('0') << current->data->price.cents
+//             << std::setfill(' ')
+//             << endl;
+//         curr = curr->next;
+//     }
+    
+// }
 
 void LinkedList::printItems() {
-    Node* current = head;
     cout << "Items Menu" << endl;
     cout << "----------" << endl;
     cout << "ID   |Name                                    | Available | Price" << endl;
     cout << "-----------------------------------------------------------------" << endl;
+    Node* current = head;
     for (unsigned i=0; i<count; ++i) {
         cout << std::left << std::setw(5) << current->data->id
             << "|" << std::setw(40) << current->data->name
@@ -184,6 +237,29 @@ void LinkedList::printItems() {
     }
     
 }
+// print 2d linked list (fail)
+// void LinkedList::printOuterItems() {
+//     OuterNode* current = outerHead;
+//     cout << "Items Menu" << endl;
+//     cout << "----------" << endl;
+//     cout << "ID   |Name                                    | Available | Price" << endl;
+//     cout << "-----------------------------------------------------------------" << endl;
+//     for (unsigned i=0; i<count; ++i) {
+//         cout << std::left << std::setw(5) << current->data->id
+//             << "|" << std::setw(40) << current->data->name
+//             << "|" << std::setw(11) << current->data->on_hand
+//             << "|$";
+//         if (current->data->price.dollars < 10) {
+//             cout << " ";
+//         }
+//         cout << current->data->price.dollars << '.' << std::setw(2) << std::setfill('0') << current->data->price.cents
+//             << std::setfill(' ')
+//             << endl;
+//         printItems(current);
+//         current = current->next;
+//     }
+    
+// }
 
 void LinkedList::printIdOnly() {
     Node* current = head;
