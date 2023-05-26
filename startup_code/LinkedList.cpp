@@ -185,6 +185,23 @@ void LinkedList::printItems() {
     
 }
 
+void LinkedList::printIdOnly() {
+    Node* current = head;
+    for (unsigned i=0; i<count; ++i) {
+        cout << std::left << std::setw(5) << current->data->id << endl;
+        current = current->next;
+    }
+    
+}
+
+void LinkedList::printCoinOnly() {
+    for (int i=0; i<8; i++) {
+        cout << purse->denomination_to_string(purse[i].denom)
+            << endl;
+    }
+    
+}
+
 void LinkedList::printCoins(std::ostream& outfile) {
     /*
     1000,3

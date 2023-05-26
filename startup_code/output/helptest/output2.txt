@@ -1,0 +1,49 @@
+Main Menu:
+	1. Display Items
+	2. Purchase Items
+	3. Save and Exit
+Administrator-Only Menu:
+	4. Add Item
+	5. Remove Item
+	6. Display Coins
+	7. Reset Stock
+	8. Reset Coins
+	9. Abort Program
+	10. Help
+
+Select your option (1-10): Purchase Item
+-------------
+Please enter the id of the item you wish to purchase:The user may input the ID of the item, such as one of the followings:
+I0002
+I0003
+I0004
+I0005
+I0001
+Please enter the id of the item you wish to purchase:You have selected "Apple Pie - Delicious Stewed Apple in a Yummy Pastry envelope". This will cost you $ 3.0.
+Please hand over the money - type in the value of each note/coin in cents.
+Press enter or ctrl-d on a new line to cancel this purchase:
+Remaining Cost: $3.0: The user may input the coin, such as one of the followings:
+5
+10
+20
+50
+100
+200
+500
+1000
+Please enter the id of the item you wish to purchase:Remaining Cost: $3.0: Remaining Cost: $2.0: Here is your Apple Pie and your change of $0.0: 
+Please come again soon.
+Main Menu:
+	1. Display Items
+	2. Purchase Items
+	3. Save and Exit
+Administrator-Only Menu:
+	4. Add Item
+	5. Remove Item
+	6. Display Coins
+	7. Reset Stock
+	8. Reset Coins
+	9. Abort Program
+	10. Help
+
+Select your option (1-10): 

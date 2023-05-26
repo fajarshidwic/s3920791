@@ -27,8 +27,9 @@ void printMainMenu() {
             << "\t6. Display Coins\n"
             << "\t7. Reset Stock\n"
             << "\t8. Reset Coins\n" 
-            << "\t9. Abort Program\n\n"
-            << "Select your option (1-9): ";
+            << "\t9. Abort Program\n"
+            << "\t10. Help\n\n"
+            << "Select your option (1-10): ";
 }
 bool loadItem(char **argv, LinkedList& vendingMachine);
 
@@ -137,6 +138,9 @@ int main(int argc, char **argv)
                 } else if (std::stoi(choice) == 9) {
                     // Abort Program
                     exit = true;
+                } else if (std::stoi(choice) == 10) {
+                   // Help
+                    std::cout << "User may input a number between 1-10" << std::endl;
                 } else if (!std::cin.eof()) {
                     // Invalid Input Number
                     std::cout << "Error: menu item selected is not valid." << std::endl;
@@ -233,13 +237,13 @@ void saveCoin(std::string outFileName, LinkedList& vendingMachine) {
 
 void purchaseItem(LinkedList* LinkedList) {
 
-    cout << "Purchase Item" << endl;
-    cout << "-------------" << endl;
-    cout << "Please enter the id of the item you wish to purchase:";
-
     // Get itemID
     std::string itemId;
     bool quit = false;
+
+    cout << "Purchase Item" << endl;
+    cout << "-------------" << endl;
+    cout << "Please enter the id of the item you wish to purchase:";
     while (!quit) {
         std::getline(std::cin, itemId);
         Helper::strip(itemId);
@@ -248,6 +252,11 @@ void purchaseItem(LinkedList* LinkedList) {
             std::cout << "Error: line entered was too long. Please try again.\n"
                     << "Error inputting ID of the product. Please try again.\n" 
                     << "Please enter the id of the item you wish to purchase:";
+        } else if (itemId == "help"){
+            std::cout << "The user may input the ID of the item, such as one of the followings:\n";
+            LinkedList->printIdOnly();
+            std::cout << "Please enter the id of the item you wish to purchase:";
+            continue;
         } else {
             quit = true;
         }
@@ -358,6 +367,10 @@ void purchaseItem(LinkedList* LinkedList) {
                                 }
                             }
                         }
+                    } else if (moneyIn == "help"){
+                        std::cout << "The user may input the coin, such as one of the followings:\n";
+                        LinkedList->printCoinOnly();
+                        std::cout << "Please enter the id of the item you wish to purchase:";
                     } else {
                         cout << "Enter a valid denomination" << endl;
                     }
@@ -457,6 +470,9 @@ void addItem(LinkedList& list) {
                     std::cout << "Error: line entered was too long. Please try again.\n"
                                 << "Error inputting name of the product. Please try again." 
                                 << std::endl;
+                } else if (name == "help"){
+                     std::cout << "The user may input the name of the item\n";
+                     continue;
                 } else {
                     stepto++;
                 }
@@ -468,6 +484,9 @@ void addItem(LinkedList& list) {
             description = Helper::strip(description);
             if (description =="" || std::cin.eof()) {
                 cancel = true;
+            } else if (description == "help"){
+                     std::cout << "The user may input the description of the item\n";
+                     continue;
             } else {
                 if (description.length() > DESCLEN) {
                     std::cout << "Error: line entered was too long. Please try again.\n"
@@ -483,6 +502,9 @@ void addItem(LinkedList& list) {
             std::getline(std::cin, price_s);
             if (price_s == "" || std::cin.eof()) {
                 cancel = true;
+            } else if (price_s == "help"){
+                     std::cout << "The user may input the price of the item\n";
+                     continue;
             } else {
                 std::vector<std::string> tokens;
                 price_s = Helper::strip(price_s);
@@ -551,6 +573,10 @@ void removeItem(LinkedList& list) {
             std::cout << "Error: line entered was too long. Please try again.\n"
                     << "Error inputting ID of the product. Please try again." 
                     << std::endl;
+        } else if (item == "help"){
+            std::cout << "The user may input the ID of the item, such as one of the followings:\n";
+            list.printIdOnly();
+            continue;
         } else {
             quit = true;
         }

@@ -1,0 +1,56 @@
+Main Menu:
+	1. Display Items
+	2. Purchase Items
+	3. Save and Exit
+Administrator-Only Menu:
+	4. Add Item
+	5. Remove Item
+	6. Display Coins
+	7. Reset Stock
+	8. Reset Coins
+	9. Abort Program
+	10. Help
+
+Select your option (1-10): Enter the item id of the item to remove from the menu: The user may input the ID of the item, such as one of the followings:
+I0002
+I0003
+I0004
+I0005
+I0001
+Enter the item id of the item to remove from the menu: "I0001 - Meat Pie - Yummy Beef in Gravy surrounded by pastry" has been removed from the system.
+Main Menu:
+	1. Display Items
+	2. Purchase Items
+	3. Save and Exit
+Administrator-Only Menu:
+	4. Add Item
+	5. Remove Item
+	6. Display Coins
+	7. Reset Stock
+	8. Reset Coins
+	9. Abort Program
+	10. Help
+
+Select your option (1-10): Items Menu
+----------
+ID   |Name                                    | Available | Price
+-----------------------------------------------------------------
+I0002|Apple Pie                               |20         |$ 3.00
+I0003|Lemon Cheesecake                        |10         |$ 4.00
+I0004|Lemon Meringue Pie                      |20         |$ 3.00
+I0005|Lemon Tart                              |12         |$ 3.75
+
+Main Menu:
+	1. Display Items
+	2. Purchase Items
+	3. Save and Exit
+Administrator-Only Menu:
+	4. Add Item
+	5. Remove Item
+	6. Display Coins
+	7. Reset Stock
+	8. Reset Coins
+	9. Abort Program
+	10. Help
+
+Select your option (1-10): 

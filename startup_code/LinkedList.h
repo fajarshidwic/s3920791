@@ -38,6 +38,8 @@ public:
     void printItems();
     void printItems(std::ostream& outfile);
     void printCoins(std::ostream& outfile);
+    void printIdOnly();
+    void printCoinOnly();
 
 private:
     // the beginning of the list
