@@ -286,7 +286,7 @@ void purchaseItem(LinkedList* LinkedList) {
                 string money = std::to_string(dollar) + "." + std::to_string(cent);
 
                 // Continuation
-                cout << money << "." << endl;
+                cout << "\033[32m" << money << ".\033[0m" << endl;
                 cout << "Please hand over the money - type in the value of each note/coin in cents.\nPress enter or ctrl-d on a new line to cancel this purchase:\n";
 
                 // Initialise more Variables
@@ -300,7 +300,7 @@ void purchaseItem(LinkedList* LinkedList) {
                     dollar = remainingCost / 100;
                     cent = remainingCost % 100;
 
-                    cout << "Remaining Cost: $" << dollar << "." << cent << ": ";
+                    cout << "Remaining Cost: $" << "\033[32m" << dollar << "." << cent << ".\033[0m" << ": ";
                     moneyIn = Helper::readInput();
                     Helper::strip(moneyIn);
                     
